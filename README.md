@@ -64,14 +64,14 @@ The most recent release can be installed from
 [PyPI](https://pypi.org/project/chemcaption/) with:
 
 ```shell
-$ pip install chemcaption
+pip install chemcaption
 ```
 -->
 
 The most recent code and data can be installed directly from GitHub with:
 
 ```bash
-$ pip install git+https://github.com/kjappelbaum/chem-caption.git
+pip install git+https://github.com/kjappelbaum/chem-caption.git
 ```
 
 ## 👐 Contributing

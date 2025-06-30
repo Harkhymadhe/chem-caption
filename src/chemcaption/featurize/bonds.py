@@ -66,6 +66,7 @@ class RotableBondCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -141,6 +142,7 @@ class RotableBondProportionFeaturizer(AbstractFeaturizer):
 
         return [{"noun": beginning + d["noun"] + end} for d in self._names]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -208,8 +210,8 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         Initialize class.
 
         Args:
-            count (bool): If set to True, count pattern frequency. Otherwise, only encode presence. Defaults to `True`.
-            bond_type (Union[str, List[str]]): Type of bond to enumerate.
+            count (bool, optional): If set to True, count pattern frequency. Otherwise, only encode presence. Defaults to `True`.
+            bond_type (Union[str, List[str]], optional): Type of bond to enumerate.
                 If `all`, enumerates all bonds irrespective of type. Defaults to `all`.
         """
         super().__init__()
@@ -258,6 +260,7 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
 
         return num_bonds
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -582,7 +585,7 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
         Args:
             conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
             morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
-            qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
+            qc_optimize (bool, optional): Run QCEngine optimization harness. Defaults to `False`.
             max_index (Optional[int]): Maximum number of atoms/bonds to consider for feature generation.
                 Redundant if `aggregation` is not `None`.
             aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors.
@@ -606,6 +609,8 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
     def featurize(self, molecule: Molecule) -> np.array:
         """
         Featurize single molecule instance.
+
+        Return the dipole moments for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -703,7 +708,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
         Args:
             conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
             morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
-            qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
+            qc_optimize (bool, optional): Run QCEngine optimization harness. Defaults to `False`.
             max_index (Optional[int]): Maximum number of atoms/bonds to consider for feature generation.
                 Redundant if `aggregation` is not `None`.
             aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors.
@@ -726,7 +731,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Return the bond orders for bonds in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.

@@ -49,6 +49,8 @@ class RDKitAdaptor(AbstractFeaturizer):
 
         Extract and return features from molecular object.
 
+        The features are extracted based on the RDKit function provided.
+
         Args:
             molecule (Molecule): Molecule representation.
 

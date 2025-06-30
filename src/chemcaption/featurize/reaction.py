@@ -48,7 +48,7 @@ class SolventAccessibleSurfaceAreaFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the solvent accessible surface area (SASA) value.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -115,7 +115,7 @@ class SolventAccessibleVolumeFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the solvent accessible volume value for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -191,7 +191,7 @@ class SolventAccessibleAtomAreaFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the solvent accessible area value for each atom in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.

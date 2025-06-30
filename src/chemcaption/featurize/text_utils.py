@@ -140,8 +140,8 @@ def generate_template(template_type: str = "qa", key: str = "single") -> str:
     """Randomly select prompt template.
 
     Args:
-        template_type (str): Type of template. Take either `qa` or `text`. Defaults to `qa`.
-        key (str): Cardinality of template. Can be `single` or `multiple`. Defaults to `single`.
+        template_type (str, optional): Type of template. Take either `qa` or `text`. Defaults to `qa`.
+        key (str, optional): Cardinality of template. Can be `single` or `multiple`. Defaults to `single`.
 
     Returns:
         str: Selected template.

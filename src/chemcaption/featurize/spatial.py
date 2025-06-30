@@ -599,7 +599,7 @@ class AtomVolumeFeaturizer(MorfeusFeaturizer):
         self.max_index = max_index
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Return the solvent accessible volume per atom in molecule.
 
         Args:
             molecule (Molecule): Molecule representation.

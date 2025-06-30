@@ -10,12 +10,10 @@ import numpy as np
 import pandas as pd
 import rdkit
 from frozendict import frozendict
-
 from rdkit import Chem
 from scipy.spatial import distance_matrix
 
 from chemcaption.featurize.text import Prompt, PromptCollection
-
 from chemcaption.featurize.utils import cached_conformer
 from chemcaption.molecules import Molecule
 
@@ -23,8 +21,8 @@ from chemcaption.molecules import Molecule
 
 __all__ = [
     "AbstractFeaturizer",  # Featurizer base class.
-    "MorfeusFeaturizer",
-    "AbstractComparator",
+    "MorfeusFeaturizer", # Morfeus-generated features base class.
+    "AbstractComparator", # Base class for comparator.
     "MultipleFeaturizer",  # Combines multiple featurizers.
     "Comparator",  # Class for comparing featurizer results amongst molecules.
     "MultipleComparator",  # Higher-level Comparator. Returns lower-level Comparator instances.
@@ -32,9 +30,6 @@ __all__ = [
 ]
 
 PERIODIC_TABLE = rdkit.Chem.GetPeriodicTable()  # Periodic table
-
-
-"""Abstract class"""
 
 
 class AbstractFeaturizer(ABC):
@@ -50,6 +45,7 @@ class AbstractFeaturizer(ABC):
         self._names = []
         self.constraint = None
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -211,10 +207,11 @@ class MorfeusFeaturizer(AbstractFeaturizer):
         """Instantiate class.
 
         Args:
-            conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
-            morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
+            conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation. Defaults to `None`.
+            morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation. Defaults to `None`.
             qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
             aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors. Defaults to `None`.
+                The aggregator can be one of the following: `mean`, `median`, `std`, `min` or `max`
         """
         super().__init__()
         self._conf_gen_kwargs = (
@@ -437,9 +434,9 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecular instance.
-            optimization_method (str): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
-            procedure (str): QC engine optimization procedure. Defaults to `geometric`.
-            rmsd_method (str): Base method for conformer pruning w.r.t RMSD property.
+            optimization_method (str, optional): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
+            procedure (str, optional): QC engine optimization procedure. Defaults to `geometric`.
+            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property. Defaults to `spyrmsd`.
 
         Returns:
             ConformerEnsemble: An ensemble of generated conformers.
@@ -468,10 +465,10 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecular instance.
-            num_conformers (int): Number of conformers to return after optimization.
-            optimization_method (str): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
-            procedure (str): QC engine optimization procedure. Defaults to `geometric`.
-            rmsd_method (str): Base method for conformer pruning w.r.t RMSD property.
+            num_conformers (str, optional): Number of conformers to return after optimization. Defaults to `1`.
+            optimization_method (str, optional): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
+            procedure (str, optional): QC engine optimization procedure. Defaults to `geometric`.
+            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property. Defaults to `spyrmsd`.
 
         Returns:
             List[Chem.Mol]: A list of generated conformers.
@@ -497,9 +494,9 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecular instance.
-            optimization_method (str): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
-            procedure (str): QC engine optimization procedure. Defaults to `geometric`.
-            rmsd_method (str): Base method for conformer pruning w.r.t RMSD property.
+            optimization_method (str, optional): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
+            procedure (str, optional): QC engine optimization procedure. Defaults to `geometric`.
+            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property. Defaults to `spyrmsd`.
 
         Returns:
             Molecule: Molecular instance.
@@ -662,8 +659,8 @@ class MultipleFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecule representation.
-            pos_key (str): Part of speech. If exists as key in POS dictionary, return value.
-                Else return value for noun POS.
+            pos_key (str, optional): Part of speech. If exists as key in POS dictionary, return value.
+                Else return value for noun POS. Defaults to `noun`.
 
         Returns:
             PromptCollection: Instance of Prompt containing relevant information extracted from `molecule`.
@@ -733,7 +730,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
 
         Args:
             molecules (List[Molecule]): Collection of molecular instances.
-            metadata (bool): Include extra molecule information.
+            metadata (bool, optional): Include extra molecule information.
                 Defaults to `False`.
 
         Returns:
@@ -829,7 +826,7 @@ class Comparator(AbstractComparator):
         Args:
             featurizer (AbstractFeaturizer): Featurizer to compare on.
             molecules (List[Molecule]): List containing a pair of molecule instances.
-            epsilon (float): Small float. Precision bound for numerical inconsistencies. Defaults to `0.0`.
+            epsilon (float, optional): Small float. Precision bound for numerical inconsistencies. Defaults to `0.0`.
 
         Returns:
             np.array: Comparison results. `1` if all extracted features are equal, else `0`.
@@ -852,7 +849,7 @@ class Comparator(AbstractComparator):
 
         Args:
             molecules (List[Molecule]): Molecule instances to be compared.
-            epsilon (float): Small float. Precision bound for numerical inconsistencies. Defaults to 0.0.
+            epsilon (float, optional): Small float. Precision bound for numerical inconsistencies. Defaults to 0.0.
 
         Returns:
             np.array: Array containing extracted features with shape `(1, N)`,
@@ -893,7 +890,7 @@ class Comparator(AbstractComparator):
 
         Args:
             molecules (List[Molecule]): Molecule instances to be compared.
-            epsilon (float): Small float. Precision bound for numerical inconsistencies. Defaults to 0.0.
+            epsilon (float, optional): Small float. Precision bound for numerical inconsistencies. Defaults to 0.0.
 
         Returns:
             np.array: Array containing comparison results with shape `(1, N)`,
@@ -966,7 +963,7 @@ class MultipleComparator(Comparator):
 
         Args:
             molecules (List[Molecule]): Molecule instances to be compared.
-            epsilon (float): Small float. Precision bound for numerical inconsistencies. Defaults to 0.0.
+            epsilon (float, optional): Small float. Precision bound for numerical inconsistencies. Defaults to 0.0.
 
         Returns:
             np.array: Array containing comparison results with shape `(1, N)`,
@@ -979,6 +976,7 @@ class MultipleComparator(Comparator):
 
         return np.concatenate(features, axis=-1)
 
+    @property
     def feature_labels(
         self,
     ) -> List[str]:

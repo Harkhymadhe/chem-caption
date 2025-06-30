@@ -4,7 +4,6 @@
 
 from typing import Dict, List, Tuple, Union
 
-
 from chemcaption.featurize.base import MultipleFeaturizer
 
 __all__ = [
@@ -51,7 +50,6 @@ from chemcaption.featurize.rules import (
     LeadLikenessFilterFeaturizer,
     LipinskiFilterFeaturizer,
 )
-
 from chemcaption.featurize.spatial import (
     AsphericityFeaturizer,
     EccentricityFeaturizer,
@@ -63,8 +61,8 @@ from chemcaption.featurize.spatial import (
 )
 from chemcaption.featurize.stereochemistry import ChiralCenterCountFeaturizer
 from chemcaption.featurize.substructure import (
-    IsomorphismFeaturizer,
     FragmentSearchFeaturizer,
+    IsomorphismFeaturizer,
     TopologyCountFeaturizer,
 )
 from chemcaption.featurize.symmetry import PointGroupFeaturizer, RotationalSymmetryNumberFeaturizer

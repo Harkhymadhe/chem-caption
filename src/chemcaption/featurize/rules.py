@@ -341,7 +341,7 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         log_p = Chem.Crippen.MolLogP(molecule.rdkit_mol)
-        return np.array([(log_p <= self.upper_logp)], dtype=int).reshape((1, -1))
+        return np.array([log_p <= self.upper_logp], dtype=int).reshape((1, -1))
 
     def _rotable_bond_violation(self, molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of rotatable bond count requirement for lead-likeness filter.
@@ -355,7 +355,7 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
         num_rotable_bonds = rdMolDescriptors.CalcNumRotatableBonds(
             molecule.reveal_hydrogens(), strict=self.strict_rotability
         )
-        return np.array([(num_rotable_bonds <= self.upper_num_rotable_bonds)], dtype=int).reshape(
+        return np.array([num_rotable_bonds <= self.upper_num_rotable_bonds], dtype=int).reshape(
             (1, -1)
         )
 

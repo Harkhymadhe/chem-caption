@@ -137,6 +137,7 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
 
         return np.array(results).reshape((1, -1))
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -198,6 +199,7 @@ class IsomorphismFeaturizer(AbstractFeaturizer):
 
         self.label = ["weisfeiler_lehman_hash"]
 
+    @property
     def feature_labels(self) -> List[str]:
         return ["weisfeiler_lehman_hash"]
 
@@ -241,6 +243,7 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
         super().__init__()
         self.reference_atomic_numbers = reference_atomic_numbers
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

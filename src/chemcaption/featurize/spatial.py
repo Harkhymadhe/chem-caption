@@ -151,6 +151,7 @@ class EccentricityFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "eccentricity"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -218,6 +219,7 @@ class AsphericityFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "asphericity"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -286,6 +288,7 @@ class InertialShapeFactorFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "inertial shape factor"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -402,6 +405,7 @@ class NPRFeaturizer(SpatialFeaturizer):
             return [f"npr{i}_value" for i in range(1, 3)]
         return [f"npr{self.variant}_value"]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -494,6 +498,7 @@ class PMIFeaturizer(SpatialFeaturizer):
             return [f"pmi{i}_value" for i in range(1, 4)]
         return [f"pmi{self.variant}_value"]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -653,6 +658,7 @@ class AtomVolumeFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -709,6 +715,7 @@ class SpherocityIndexFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "spherocity index"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -776,6 +783,7 @@ class RadiusOfGyrationFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "radius of gyration"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

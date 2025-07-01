@@ -61,6 +61,7 @@ class SolventAccessibleSurfaceAreaFeaturizer(MorfeusFeaturizer):
         morfeus_instance = self._get_morfeus_instance(molecule=molecule, morpheus_instance="sasa")
         return np.array([morfeus_instance.area]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -128,6 +129,7 @@ class SolventAccessibleVolumeFeaturizer(MorfeusFeaturizer):
         morfeus_instance = self._get_morfeus_instance(molecule=molecule, morpheus_instance="sasa")
         return np.array([morfeus_instance.volume]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -243,6 +245,7 @@ class SolventAccessibleAtomAreaFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

@@ -491,7 +491,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         Returns:
             List[Dict[str, str]]: List of names for extracted features according to parts-of-speech.
         """
-        bond_types = [label for label in super().feature_labels() if label != "num_bonds"]
+        bond_types = [label for label in super().feature_labels if label != "num_bonds"]
 
         mapped_names = [_MAP_BOND_TYPE_TO_CLEAN_NAME[bond_type] for bond_type in bond_types]
 
@@ -542,6 +542,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         """
         return np.array(self._get_bond_distribution(molecule=molecule)).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -551,7 +552,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         Returns:
             List[str]: List of labels of extracted features.
         """
-        labels = [label for label in super().feature_labels() if label != "num_bonds"]
+        labels = [label for label in super().feature_labels if label != "num_bonds"]
         labels = self._parse_bond_names([x.split("_")[1] for x in labels])
 
         return labels
@@ -660,6 +661,7 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -782,6 +784,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

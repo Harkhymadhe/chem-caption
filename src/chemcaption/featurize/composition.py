@@ -40,6 +40,7 @@ class MolecularFormulaFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -92,6 +93,7 @@ class MolecularMassFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -148,6 +150,7 @@ class MonoisotopicMolecularMassFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -220,6 +223,7 @@ class ElementMassFeaturizer(AbstractFeaturizer):
         noun = "masses" if len(self.preset) > 1 else "mass"
         return [{"noun": f"total {noun} of " + join_list_elements(self.preset)}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -380,6 +384,7 @@ class ElementMassProportionFeaturizer(ElementMassFeaturizer):
         proportion = "proportions" if len(self.preset) > 1 else "proportion"
         return [{"noun": f"mass {proportion} of " + join_list_elements(self.preset)}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """
         Return list of feature labels.
@@ -425,6 +430,7 @@ class ElementCountFeaturizer(ElementMassFeaturizer):
         """Initialize class."""
         super().__init__(preset=preset)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -536,6 +542,7 @@ class ElementCountProportionFeaturizer(ElementCountFeaturizer):
         count = "counts" if len(self.preset) > 1 else "count"
         return [{"noun": f"relative atom {count} of " + join_list_elements(self.preset)}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -596,6 +603,7 @@ class AtomCountFeaturizer(ElementCountFeaturizer):
         """
         return [{"noun": "total number of atoms"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -649,6 +657,7 @@ class DegreeOfUnsaturationFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

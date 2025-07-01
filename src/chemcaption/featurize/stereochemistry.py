@@ -31,6 +31,7 @@ class ChiralCenterCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

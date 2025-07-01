@@ -105,7 +105,7 @@ class AbstractFeaturizer(ABC):
         representation = molecule.representation_string
         representation_type = molecule.__repr__().split("Mole")[0]
 
-        completion_labels = self.feature_labels()
+        completion_labels = self.feature_labels
 
         try:
             completion_name = self.get_names()[0][pos_key]
@@ -154,6 +154,20 @@ class AbstractFeaturizer(ABC):
             for pos_key, molecule in zip(pos_keys, molecules)
         ]
 
+    def labeled_featurize(self, molecule:Molecule) -> Dict[str, float]:
+        """Featurize and create a dict where keys are labels.
+        
+        Args:
+            molecule (List[Molecule]): Molecule representation.
+
+        Returns:
+            Dict[str, float]: Dict containing the featurizer labels and corresponding values.
+        """
+
+        results = self.featurize(molecule)
+
+        return dict(zip(self.feature_labels, results.flatten().tolist()))
+
     @abstractmethod
     def implementors(self) -> List[str]:
         """
@@ -167,6 +181,7 @@ class AbstractFeaturizer(ABC):
         """
         raise NotImplementedError
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -596,7 +611,7 @@ class AbstractComparator(ABC):
         """
         raise NotImplementedError
 
-    @abstractmethod
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -682,6 +697,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
         results = [f.featurize_many(molecules=molecules) for f in self.featurizers]
         return np.concatenate(results, axis=1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -691,7 +707,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
         Returns:
             List[str]: List of labels for all features extracted by all featurizers.
         """
-        labels = [label for f in self.featurizers for label in f.feature_labels()]
+        labels = [label for f in self.featurizers for label in f.feature_labels]
 
         return labels
 
@@ -716,7 +732,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
         self.featurizers = featurizers
 
         print(f"`{self.__class__.__name__}` instance fitted with {len(featurizers)} featurizers!\n")
-        self.label = self.feature_labels()
+        self.label = self.feature_labels
 
         self.prompt_template = [featurizer.prompt_template for featurizer in featurizers]
         self.completion_template = [featurizer.completion_template for featurizer in featurizers]
@@ -748,7 +764,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
         else:
             extra_columns = []
 
-        columns = extra_columns + self.feature_labels()
+        columns = extra_columns + self.feature_labels
 
         return pd.DataFrame(data=features, columns=columns)
 
@@ -861,6 +877,7 @@ class Comparator(AbstractComparator):
         ]
         return np.concatenate(results, axis=-1)
 
+    @property
     def feature_labels(
         self,
     ) -> List[str]:
@@ -874,7 +891,7 @@ class Comparator(AbstractComparator):
         """
         labels = []
         for featurizer in self.featurizers:
-            labels += featurizer.feature_labels()
+            labels += featurizer.feature_labels
 
         labels = [label + "_similarity" for label in labels]
 
@@ -990,7 +1007,7 @@ class MultipleComparator(Comparator):
         """
         labels = []
         for comparator in self.comparators:
-            labels += comparator.feature_labels()
+            labels += comparator.feature_labels
 
         return labels
 

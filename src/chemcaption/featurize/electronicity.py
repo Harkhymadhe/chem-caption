@@ -45,6 +45,7 @@ class HydrogenAcceptorCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -97,6 +98,7 @@ class HydrogenDonorCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -156,6 +158,7 @@ class ValenceElectronCountFeaturizer(AbstractFeaturizer):
             },
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -237,6 +240,7 @@ class ElectronAffinityFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_ea(**self.morfeus_kwargs)]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -304,6 +308,7 @@ class IonizationPotentialFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_ip(**self.morfeus_kwargs)]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -372,6 +377,7 @@ class HOMOEnergyFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_homo()]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -439,6 +445,7 @@ class LUMOEnergyFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_lumo()]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -556,6 +563,7 @@ class AtomChargeFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -687,6 +695,7 @@ class AtomNucleophilicityFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -825,6 +834,7 @@ class AtomElectrophilicityFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -912,6 +922,7 @@ class MoleculeNucleophilicityFeaturizer(MorfeusFeaturizer):
 
         return np.array([nucleophilicity]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -984,6 +995,7 @@ class MoleculeElectrophilicityFeaturizer(MorfeusFeaturizer):
 
         return np.array([electrophilicity]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -1056,6 +1068,7 @@ class MoleculeNucleofugalityFeaturizer(MorfeusFeaturizer):
 
         return np.array([nucleofugality]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -1128,6 +1141,7 @@ class MoleculeElectrofugalityFeaturizer(MorfeusFeaturizer):
 
         return np.array([electrofugality]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

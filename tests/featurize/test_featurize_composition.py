@@ -31,6 +31,8 @@ __all__ = [
 
 
 def test_molecular_formula_featurizer():
+    """Tests featurizer MolecularFormulaFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = MolecularFormulaFeaturizer()
     results = featurizer.featurize(molecule)
@@ -52,6 +54,8 @@ def test_molecular_formula_featurizer():
 
 
 def test_molecular_mass_featurizer():
+    """Tests featurizer MolecularMassFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = MolecularMassFeaturizer()
     results = featurizer.featurize(molecule)
@@ -68,6 +72,8 @@ def test_molecular_mass_featurizer():
 
 
 def test_monoisotopic_mass_featurizer():
+    """Tests featurizer MonoisotopicMolecularMassFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = MonoisotopicMolecularMassFeaturizer()
     results = featurizer.featurize(molecule)
@@ -82,6 +88,8 @@ def test_monoisotopic_mass_featurizer():
 
 
 def test_element_mass_featurizer():
+    """Tests featurizer ElementMassFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = ElementMassFeaturizer()
     results = featurizer.featurize(molecule)
@@ -102,6 +110,8 @@ def test_element_mass_featurizer():
 
 
 def test_element_mass_proportion_featurizer():
+    """Tests featurizer ElementMassProportionFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = ElementMassProportionFeaturizer()
 
@@ -116,6 +126,8 @@ def test_element_mass_proportion_featurizer():
 
 
 def test_element_count_proportion_featurizer():
+    """Tests featurizer ElementCountProportionFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = ElementCountProportionFeaturizer()
 
@@ -132,6 +144,8 @@ def test_element_count_proportion_featurizer():
 
 
 def test_element_count_featurizer():
+    """Tests featurizer ElementCountFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = ElementCountFeaturizer()
 
@@ -148,6 +162,8 @@ def test_element_count_featurizer():
 
 
 def test_atom_count_featurizer():
+    """Tests featurizer AtomCountFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = AtomCountFeaturizer()
 
@@ -164,6 +180,8 @@ def test_atom_count_featurizer():
 
 
 def test_degree_of_unsaturation_featurizer():
+    """Tests featurizer DegreeOfUnsaturationFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = DegreeOfUnsaturationFeaturizer()
 

@@ -148,7 +148,7 @@ def test_lipinski_violation_count_comparator():
 
     non_lipinski_similar = [
         SMILESMolecule("[Na+]"),
-        SMILESMolecule("CC/C(=C(\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
+        SMILESMolecule("CC/C(=C(\\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
     ]
 
     results = featurizer.compare(non_lipinski_similar).item()
@@ -171,7 +171,7 @@ def test_ghose_filter_comparator():
 
     non_ghose_similar = [
         SMILESMolecule("[Na+]"),
-        SMILESMolecule("CC/C(=C(\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
+        SMILESMolecule("CC/C(=C(\\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
     ]
 
     results = featurizer.compare(non_ghose_similar).item()
@@ -194,7 +194,7 @@ def test_lead_likeness_filter_comparator():
 
     non_lead_like = [
         SMILESMolecule("[Na+]"),
-        SMILESMolecule("CC/C(=C(\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
+        SMILESMolecule("CC/C(=C(\\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
     ]
 
     results = featurizer.compare(non_lead_like).item()
@@ -217,7 +217,7 @@ def test_atom_count_comparator():
 
     non_similar_atom_count = [
         SMILESMolecule("[Na+]"),
-        SMILESMolecule("CC/C(=C(\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
+        SMILESMolecule("CC/C(=C(\\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
     ]
 
     results = featurizer.compare(non_similar_atom_count).item()
@@ -240,7 +240,7 @@ def test_drug_likeness_comparator():
 
     non_similar = [
         SMILESMolecule("[Na+]"),
-        SMILESMolecule("CC/C(=C(\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
+        SMILESMolecule("CC/C(=C(\\c1ccccc1)c1ccc(OCCN(C)C)cc1)c1ccccc1"),
     ]
 
     results = np.unique(featurizer.compare(non_similar))

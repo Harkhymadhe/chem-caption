@@ -13,6 +13,7 @@ __all__ = [
 
 
 def test_multiple_featurizer():
+    """Tests the MultipleFeaturizer."""
     smiles = SMILESMolecule("CCCC")
 
     featurizer = MultipleFeaturizer(

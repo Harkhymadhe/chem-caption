@@ -11,6 +11,8 @@ __all__ = [
 
 
 def test_svg_featurizer():
+    """Tests the SVGFeaturizer."""
+
     featurizer = SVGFeaturizer()
 
     molecule = SMILESMolecule("O")

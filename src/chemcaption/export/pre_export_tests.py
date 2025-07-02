@@ -69,7 +69,16 @@ from chemcaption.featurize.symmetry import PointGroupFeaturizer, RotationalSymme
 from chemcaption.presets import ALL_SMARTS
 
 
-def get_smarts_featurizers():
+def get_smarts_featurizers() -> List:
+    """Return smart featurizers.
+
+    Args:
+        None.
+
+    Returns:
+        list: list of featurizers
+    """
+
     featurizers = []
     for name, smarts in ALL_SMARTS.items():
         featurizers.append(FragmentSearchFeaturizer([smarts], names=[name]))

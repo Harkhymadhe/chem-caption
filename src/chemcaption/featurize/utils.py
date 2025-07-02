@@ -3,6 +3,7 @@
 """Utilities for `featurize` module."""
 
 from functools import lru_cache
+from typing import List, Tuple
 
 import numpy as np
 from pymatgen.core import IMolecule  # use immutable for caching
@@ -45,7 +46,16 @@ def _pmg_mol_to_pointgroup_analyzer(mol):
     return analyzer
 
 
-def get_atom_symbols_and_positions(conf):
+def get_atom_symbols_and_positions(conf: List) -> Tuple[List, List]:
+    """Returns a touple of atom symbols and positions.
+
+    Args:
+        conf (list): List of conformers (atoms).
+
+    Returns:
+        tuple(lsit, list): tuple of symbols and positions.
+    """
+
     mol = conf.GetOwningMol()
     symbols = [atom.GetSymbol() for atom in mol.GetAtoms()]
     positions = conf.GetPositions()
@@ -54,6 +64,8 @@ def get_atom_symbols_and_positions(conf):
 
 @lru_cache(maxsize=None)
 def cached_conformer(smiles, kwargs):
+    """Returns cached konformer."""
+
     from givemeconformer.api import _get_conformer
 
     mol, conformers = _get_conformer(smiles=smiles, **kwargs)

@@ -236,16 +236,16 @@ class ElementMassFeaturizer(AbstractFeaturizer):
         return [element.lower() + "_mass" for element in self.preset]
 
     @property
-    def preset(self) -> Optional[Union[List[str], Dict[str, str]]]:
+    def preset(self) -> Union[List[str], Dict[str, str]]:
         """Get molecular preset. Getter method."""
         return self._preset
 
     @preset.setter
-    def preset(self, new_preset: Optional[Union[List[str], Dict[str, str]]]) -> None:
+    def preset(self, new_preset: Union[List[str], Dict[str, str]]) -> None:
         """Set molecular preset. Setter method.
 
         Args:
-            new_preset (Optional[Union[List[str], Dict[str, str]]]): List of chemical elements of interest.
+            new_preset (Union[List[str], Dict[str, str]]): List of chemical elements of interest.
 
         Returns:
             None.

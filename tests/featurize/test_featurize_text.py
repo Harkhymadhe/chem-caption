@@ -10,6 +10,8 @@ __all__ = [
 
 
 def test_prompt_container():
+    """Tests the prompt collection."""
+
     prompt_1 = Prompt(
         completion="Answer: 30",
         representation="c1ccccc1",

@@ -13,6 +13,8 @@ __all__ = [
 
 
 def test_valence_electron_count():
+    """Tests the ValenceElectronCountAdaptor."""
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     featurizer = ValenceElectronCountAdaptor()
     results = featurizer.featurize(molecule)

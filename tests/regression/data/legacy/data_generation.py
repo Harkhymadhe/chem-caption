@@ -7,7 +7,7 @@ import os
 import pandas as pd
 from rdkit.Chem import Lipinski, rdMolDescriptors
 
-from chemcaption.featurize.base import MultipleFeaturizer
+from chemcaption.featurize.base import AbstractFeaturizer, MultipleFeaturizer
 from chemcaption.featurize.bonds import BondTypeCountFeaturizer, BondTypeProportionFeaturizer
 from chemcaption.featurize.composition import (
     AtomCountFeaturizer,
@@ -236,7 +236,17 @@ def generate_info(string: str):
     return dict(zip(keys, values))
 
 
-def extend_dataset(dataset, featurizer):
+def extend_dataset(dataset: pd.DataFrame, featurizer: AbstractFeaturizer) -> pd.DataFrame:
+    """Extends the dataset
+
+    Args:
+        dataset (obj`pd.DataFrame`): current dataset.
+        featurizer (obj`AbstractFeaturizer`): featurizer.
+
+    Returns:
+        pd.DataFrame: new merged dataset.
+    """
+
     new_data = [
         [string] + featurizer.featurize(molecule=SMILESMolecule(string)).flatten().tolist()
         for string in smiles_list

@@ -24,6 +24,8 @@ __all__ = [
 
 
 def test_bond_type_count_featurizer():
+    """Tests the BondTypeCountFeaturizer"""
+
     bt = BondTypeCountFeaturizer()
     molecule = SMILESMolecule("C1=CC=CC=C1")
     results = bt.featurize(molecule)
@@ -58,6 +60,8 @@ Constraint: Return a list of comma separated integer boolean indicators (0 for a
 
 
 def test_rotable_bond_proportion_featurizer():
+    """Tests the RotableBondProportionFeaturizer"""
+
     brf = RotableBondProportionFeaturizer()
     molecule = SMILESMolecule("C1=CC=CC=C1")
     results = brf.featurize(molecule)
@@ -76,6 +80,8 @@ def test_rotable_bond_proportion_featurizer():
 
 
 def test_rotable_bond_count_featurizer():
+    """Tests the RotableBondCountFeaturizer"""
+
     rbcf = RotableBondCountFeaturizer()
     molecule = SMILESMolecule("C1=CC=CC=C1")
     results = rbcf.featurize(molecule)
@@ -94,6 +100,8 @@ def test_rotable_bond_count_featurizer():
 
 
 def test_bond_type_proportion_featurizer():
+    """Tests the BondTypeProportionFeaturizer"""
+
     featurizer = BondTypeProportionFeaturizer()
 
     molecule = SMILESMolecule("C1=CC=CC=C1")

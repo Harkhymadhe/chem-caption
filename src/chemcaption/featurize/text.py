@@ -122,10 +122,20 @@ class Prompt:
 
 
 class PromptCollection:
+    """Handles the list/collection of promps.
+
+    Args:
+        prompst (List[Prompt]): list of prompt objects.
+    """
+
     def __init__(self, prompts: List[Prompt]):
+        """ "Class initializer."""
+
         self.prompts = prompts
 
-    def to_list(self):
+    def to_list(self) -> List[Dict]:
+        """Converts the list of prompts to dict."""
+
         return [prompt.to_dict() for prompt in self.prompts]
 
     def __len__(self) -> int:

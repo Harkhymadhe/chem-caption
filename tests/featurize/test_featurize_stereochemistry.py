@@ -16,6 +16,8 @@ __all__ = [
 
 
 def test_chiral_center_count_featurizer():
+    """Tests the ChiralCenterCountFeaturizer."""
+
     mol = SMILESMolecule(representation_string="CC")
 
     featurizer = ChiralCenterCountFeaturizer()

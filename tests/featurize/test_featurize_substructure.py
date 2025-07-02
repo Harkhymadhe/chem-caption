@@ -20,6 +20,8 @@ __all__ = [
 
 
 def test_topology_count_featurizer():
+    """Tests featurizer TopologyCountFeaturizer."""
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     featurizer = TopologyCountFeaturizer.from_preset("carbon")
     results = featurizer.featurize(molecule)
@@ -46,6 +48,8 @@ def test_topology_count_featurizer():
 
 
 def test_fragment_search_featurizer():
+    """Tests featurizer FragmentSearchFeaturizer."""
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     featurizer = FragmentSearchFeaturizer.from_preset("organic")
     results = featurizer.featurize(molecule)
@@ -101,6 +105,8 @@ def test_fragment_search_featurizer():
 
 
 def test_isomorphism_featurizer():
+    """Tests featurizer IsomorphismFeaturizer."""
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     featurizer = IsomorphismFeaturizer()
 

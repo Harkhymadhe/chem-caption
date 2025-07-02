@@ -17,6 +17,8 @@ __all__ = [
 
 
 def test_lipinski_filter_featurizer():
+    """Tests featurizer LipinskiFilterFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = LipinskiFilterFeaturizer()
 
@@ -37,6 +39,8 @@ def test_lipinski_filter_featurizer():
 
 
 def test_ghose_filter_featurizer():
+    """Tests featurizer GhoseFilterFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = GhoseFilterFeaturizer()
 
@@ -56,6 +60,8 @@ def test_ghose_filter_featurizer():
 
 
 def test_leadlikeness_filter_featurizer():
+    """Tests featurizer LeadLikenessFilterFeaturizer."""
+
     molecule = SMILESMolecule("O")
     featurizer = LeadLikenessFilterFeaturizer()
 

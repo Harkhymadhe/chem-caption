@@ -99,7 +99,7 @@ class MoleculeGraph(nx.Graph):
         Returns:
             str: Weisfeiler-Lehman graph hash.
         """
-        if not self._hash:
+        if self._hash is None:
             self._hash = nx.weisfeiler_lehman_graph_hash(self.graph)
         return self._hash
 

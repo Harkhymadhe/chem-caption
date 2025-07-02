@@ -21,8 +21,8 @@ from chemcaption.molecules import Molecule
 
 __all__ = [
     "AbstractFeaturizer",  # Featurizer base class.
-    "MorfeusFeaturizer", # Morfeus-generated features base class.
-    "AbstractComparator", # Base class for comparator.
+    "MorfeusFeaturizer",  # Morfeus-generated features base class.
+    "AbstractComparator",  # Base class for comparator.
     "MultipleFeaturizer",  # Combines multiple featurizers.
     "Comparator",  # Class for comparing featurizer results amongst molecules.
     "MultipleComparator",  # Higher-level Comparator. Returns lower-level Comparator instances.
@@ -154,9 +154,9 @@ class AbstractFeaturizer(ABC):
             for pos_key, molecule in zip(pos_keys, molecules)
         ]
 
-    def labeled_featurize(self, molecule:Molecule) -> Dict[str, float]:
+    def labeled_featurize(self, molecule: Molecule) -> Dict[str, float]:
         """Featurize and create a dict where keys are labels.
-        
+
         Args:
             molecule (List[Molecule]): Molecule representation.
 

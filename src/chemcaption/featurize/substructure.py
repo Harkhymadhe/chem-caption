@@ -201,6 +201,15 @@ class IsomorphismFeaturizer(AbstractFeaturizer):
 
     @property
     def feature_labels(self) -> List[str]:
+        """Return feature label(s).
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of labels for extracted features.
+        """
+
         return ["weisfeiler_lehman_hash"]
 
     def featurize(self, molecule: Molecule) -> np.array:

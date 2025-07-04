@@ -79,8 +79,7 @@ class RotableBondCountFeaturizer(AbstractFeaturizer):
         return ["num_rotable_bonds"]
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """
-        Featurize single molecule instance. Count the number of rotable (single, non-terminal) bonds in a molecule.
+        """Featurize single molecule instance. Count the number of rotable (single, non-terminal) bonds in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.

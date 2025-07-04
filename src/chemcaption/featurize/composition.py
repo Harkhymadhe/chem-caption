@@ -674,7 +674,7 @@ class DegreeOfUnsaturationFeaturizer(AbstractFeaturizer):
         """Return the degree of unsaturation for a molecule.
 
         .. math::
-            {\displaystyle \mathrm {DU} =1+{\tfrac {1}{2}}\sum n_{i}(v_{i}-2)}
+            {\\displaystyle \\mathrm {DU} =1+{\tfrac {1}{2}}\\sum n_{i}(v_{i}-2)}
 
         where ni is the number of atoms with valence vi.
 

@@ -57,6 +57,7 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
 
         self.prompt_template = "{PROPERTY_NAME} in the molecule with {REPR_SYSTEM} {REPR_STRING}?"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return names of extracted features.
 
@@ -85,10 +86,10 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
 
     @classmethod
     def from_preset(cls, preset: str, count: bool = True):
-        """
+        """Generate class instance with atomic numbers of interest based on predefined presets.
+
         Args:
-            preset (str): Preset name of the substructures
-                encoded by the SMARTS strings.
+            preset (str): Preset name of the substructures encoded by the SMARTS strings.
                 Predefined presets can be specified as strings, and can be one of:
                     - `heterocyclic`,
                     - `rings`,
@@ -97,8 +98,10 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
                     - `warheads` or
                     - `organic`.
                     - `all`
+
             count (bool): If set to True, count pattern frequency.
         """
+
         if preset not in SMARTS_MAP:
             raise ValueError(
                 f"Invalid preset name '{preset}'. "
@@ -267,6 +270,7 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
             for atomic_number in self.reference_atomic_numbers
         ]
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 

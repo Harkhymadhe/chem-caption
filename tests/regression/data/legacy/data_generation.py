@@ -6,6 +6,7 @@ import os
 
 import pandas as pd
 from rdkit.Chem import Lipinski, rdMolDescriptors
+from tqdm import tqdm
 
 from chemcaption.featurize.base import AbstractFeaturizer, MultipleFeaturizer
 from chemcaption.featurize.bonds import BondTypeCountFeaturizer, BondTypeProportionFeaturizer
@@ -128,8 +129,8 @@ def generate_info(string: str):
 
     keys = ["smiles", "weisfeiler_lehman_hash", "num_atoms"]
 
-    keys += bond_type_count_featurizer.feature_labels()
-    keys += bond_type_proportion_featurizer.feature_labels()
+    keys += bond_type_count_featurizer.feature_labels
+    keys += bond_type_proportion_featurizer.feature_labels
 
     keys += [
         "num_rotable_bonds",
@@ -149,30 +150,30 @@ def generate_info(string: str):
     ]
 
     masses = mass_featurizer.featurize(molecule=mol).reshape((-1,)).tolist()
-    keys += mass_featurizer.feature_labels()
+    keys += mass_featurizer.feature_labels
 
     mass_ratios = mass_ratio_featurizer.featurize(molecule=mol).reshape((-1,)).tolist()
-    keys += mass_ratio_featurizer.feature_labels()
+    keys += mass_ratio_featurizer.feature_labels
 
     counts = count_featurizer.featurize(molecule=mol).reshape((-1,)).tolist()
-    keys += count_featurizer.feature_labels()
+    keys += count_featurizer.feature_labels
 
     count_ratios = count_ratio_featurizer.featurize(molecule=mol).reshape((-1,)).tolist()
-    keys += count_ratio_featurizer.feature_labels()
+    keys += count_ratio_featurizer.feature_labels
 
     num_environments = topology_featurizer.featurize(molecule=mol).reshape(-1).tolist()
-    keys += topology_featurizer.feature_labels()
+    keys += topology_featurizer.feature_labels
 
     num_chiral_centers = chiral_featurizer.featurize(molecule=mol).reshape(-1).tolist()
-    keys += chiral_featurizer.feature_labels()
+    keys += chiral_featurizer.feature_labels
 
     rotation_symmetry_number = (
         rotation_symmetry_featurizer.featurize(molecule=mol).reshape(-1).tolist()
     )
-    keys += rotation_symmetry_featurizer.feature_labels()
+    keys += rotation_symmetry_featurizer.feature_labels
 
     point_group = point_group_featurizer.featurize(molecule=mol).reshape(-1).tolist()
-    keys += point_group_featurizer.feature_labels()
+    keys += point_group_featurizer.feature_labels
 
     valence_count = valence_featurizer.featurize(molecule=mol).item()
 
@@ -222,15 +223,15 @@ def generate_info(string: str):
     values += shape_features
     values += npr_pmi
 
-    keys += shape_featurizer.feature_labels()
-    keys += npr_pmi_featurizer.feature_labels()
+    keys += shape_featurizer.feature_labels
+    keys += npr_pmi_featurizer.feature_labels
 
     for preset in ["rings", "organic", "heterocyclic", "warheads", "scaffolds", "amino"]:
         for val in [True, False]:
             smarts_featurizer = FragmentSearchFeaturizer.from_preset(count=val, preset=preset)
             smarts_presence = smarts_featurizer.featurize(molecule=mol).reshape((-1,)).tolist()
 
-            keys += smarts_featurizer.feature_labels()
+            keys += smarts_featurizer.feature_labels
             values += smarts_presence
 
     return dict(zip(keys, values))
@@ -252,14 +253,17 @@ def extend_dataset(dataset: pd.DataFrame, featurizer: AbstractFeaturizer) -> pd.
         for string in smiles_list
     ]
     print("New data generated!")
-    new_data = pd.DataFrame(data=new_data, columns=["smiles"] + featurizer.feature_labels())
+    new_data = pd.DataFrame(data=new_data, columns=["smiles"] + featurizer.feature_labels)
     new_data = pd.merge(left=dataset, right=new_data, left_on="smiles", right_on="smiles")
     print("New data merged and persisted!")
     return new_data
 
 
 if __name__ == "__main__":
-    data = [generate_info(string) for string in smiles_list]
+    data = []
+    for string in tqdm(smiles_list):
+        data.append(generate_info(string))
+    # data = [generate_info(string) for string in smiles_list]
 
     data = pd.DataFrame(data=data)
 

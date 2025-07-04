@@ -25,6 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -e ".[symmetry,tests,morfeus]"
+          python -m pip install -r requirements.txt
+          python -m pip install -r test_requirements.txt
       - name: Test for label uniqueness
         run: python src/chemcaption/export/pre_export_tests.py
       - name: Test with pytest and generate coverage file

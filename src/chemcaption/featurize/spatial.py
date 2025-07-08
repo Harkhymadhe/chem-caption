@@ -449,7 +449,7 @@ class NPRFeaturizer(SpatialFeaturizer):
 
 
 class PMIFeaturizer(SpatialFeaturizer):
-    """Featurizer to return the normalized principal moments ratio (NPR) value of a molecule."""
+    """Featurizer to return the principal moments of inertia (PMI) value of a molecule."""
 
     def __init__(
         self,

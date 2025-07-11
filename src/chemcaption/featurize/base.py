@@ -108,9 +108,9 @@ class AbstractFeaturizer(ABC):
         completion_labels = self.feature_labels
 
         try:
-            completion_name = self.get_names()[0][pos_key]
+            completion_name = self.get_names[0][pos_key]
         except KeyError:
-            completion_name = self.get_names()[0]["noun"]
+            completion_name = self.get_names[0]["noun"]
 
         return Prompt(
             completion=completion,

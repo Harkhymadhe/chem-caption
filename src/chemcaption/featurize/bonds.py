@@ -121,6 +121,7 @@ class RotableBondProportionFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -342,6 +343,7 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
             bond_names = [self.prefix + name.lower() + self.suffix for name in bond_names]
         return bond_names
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -481,6 +483,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         self.prefix = ""
         self.suffix = "_bond_proportion"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 

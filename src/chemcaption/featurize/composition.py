@@ -211,6 +211,7 @@ class ElementMassFeaturizer(AbstractFeaturizer):
             "What {VERB} the {PROPERTY_NAME} for the molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
         )
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -372,6 +373,7 @@ class ElementMassProportionFeaturizer(ElementMassFeaturizer):
         self.prefix = ""
         self.suffix = "_mass_ratio"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -442,6 +444,7 @@ class ElementCountFeaturizer(ElementMassFeaturizer):
         """
         return ["num_" + element.lower() + "_atoms" for element in self.preset]
 
+    @property
     def get_names(self):
         """Return feature names.
 
@@ -530,6 +533,7 @@ class ElementCountProportionFeaturizer(ElementCountFeaturizer):
         """
         super().__init__(preset=preset)
 
+    @property
     def get_names(self):
         """Return feature names.
 
@@ -592,6 +596,7 @@ class AtomCountFeaturizer(ElementCountFeaturizer):
             }
         ]
 
+    @property
     def get_names(self):
         """Return feature names.
 

@@ -370,6 +370,7 @@ class NPRFeaturizer(SpatialFeaturizer):
             2: Descriptors3D.NPR2,
         }
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -510,6 +511,7 @@ class PMIFeaturizer(SpatialFeaturizer):
         """
         return self._parse_labels()
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 

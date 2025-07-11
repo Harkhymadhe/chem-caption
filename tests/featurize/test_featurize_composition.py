@@ -43,7 +43,7 @@ def test_molecular_formula_featurizer():
     results = featurizer.featurize(molecule)
     assert results[0] == "C6H6"
 
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -68,7 +68,7 @@ def test_molecular_mass_featurizer():
     )
     assert text.to_dict()["filled_completion"] == "Answer: 18.015"
 
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
 
 def test_monoisotopic_mass_featurizer():
@@ -93,7 +93,7 @@ def test_element_mass_featurizer():
     molecule = SMILESMolecule("O")
     featurizer = ElementMassFeaturizer()
     results = featurizer.featurize(molecule)
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
     # ["Carbon", "Hydrogen", "Nitrogen", "Oxygen"] is default preset
     assert results[0][0] == 0
     assert results[0][1] == 2.016
@@ -116,7 +116,7 @@ def test_element_mass_proportion_featurizer():
     featurizer = ElementMassProportionFeaturizer()
 
     results = featurizer.featurize(molecule)
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -132,7 +132,7 @@ def test_element_count_proportion_featurizer():
     featurizer = ElementCountProportionFeaturizer()
 
     results = featurizer.featurize(molecule)
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -150,7 +150,7 @@ def test_element_count_featurizer():
     featurizer = ElementCountFeaturizer()
 
     results = featurizer.featurize(molecule)
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -168,7 +168,7 @@ def test_atom_count_featurizer():
     featurizer = AtomCountFeaturizer()
 
     results = featurizer.featurize(molecule)
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -186,7 +186,7 @@ def test_degree_of_unsaturation_featurizer():
     featurizer = DegreeOfUnsaturationFeaturizer()
 
     results = featurizer.featurize(molecule)
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (

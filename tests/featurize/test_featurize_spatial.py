@@ -36,7 +36,7 @@ def test_pmi_featurizer():
     assert np.isclose(results[0][0], 272, atol=2)
     assert np.isclose(results[0][1], 546, atol=2)
     assert np.isclose(results[0][2], 793, atol=2)
-    assert len(featurizer.feature_labels()) == 3
+    assert len(featurizer.feature_labels) == 3
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -55,7 +55,7 @@ def test_asphericity_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.isclose(results[0][0], 0.3, atol=0.2)
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -73,7 +73,7 @@ def test_eccentricity_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.isclose(results[0][0], 0.9, atol=0.2)
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -91,7 +91,7 @@ def test_inertial_shape_factor():
     results = featurizer.featurize(molecule)
 
     assert np.isclose(results[0][0], 0.002, atol=0.01)
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -109,7 +109,7 @@ def test_npr_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.isclose(results[0][0], 0.34, atol=0.2)
-    assert len(featurizer.feature_labels()) == 2
+    assert len(featurizer.feature_labels) == 2
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -127,7 +127,7 @@ def test_radius_of_gyration_featurizer():
     results = featurizer.featurize(molecule).item()
 
     assert np.isclose(results, 2.301, atol=0.2)
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(molecule)
     assert (
@@ -145,7 +145,7 @@ def test_spherocity_index_featurizer():
     results = featurizer.featurize(molecule).item()
 
     assert np.isclose(results, 0.0353, atol=0.2)
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(molecule)
     assert (

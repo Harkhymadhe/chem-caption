@@ -26,7 +26,7 @@ def test_hydrogen_acceptor_count_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.equal(results, 4).all()
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -44,7 +44,7 @@ def test_hydrogen_donor_count_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.equal(results, 1).all()
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
@@ -62,7 +62,7 @@ def test_valence_electron_count_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.equal(results, 56).all()
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (

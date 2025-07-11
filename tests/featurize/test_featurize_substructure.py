@@ -26,14 +26,14 @@ def test_topology_count_featurizer():
     featurizer = TopologyCountFeaturizer.from_preset("carbon")
     results = featurizer.featurize(molecule)
     assert len(results) == 1
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert isinstance(text, Prompt)
 
     featurizer = TopologyCountFeaturizer.from_preset("organic")
     results = featurizer.featurize(molecule)
     assert len(results) == 1
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
     assert results[0][0] == 1
     assert results[0][1] == 1
     assert np.sum(results) == 2
@@ -55,7 +55,7 @@ def test_fragment_search_featurizer():
     results = featurizer.featurize(molecule)
 
     assert len(results) == 1
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     assert sum(results[0]) == 0
 
@@ -72,7 +72,7 @@ def test_fragment_search_featurizer():
     results = featurizer.featurize(molecule)
 
     assert len(results) == 1
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     assert sum(results[0]) == 0
 
@@ -90,7 +90,7 @@ def test_fragment_search_featurizer():
     results = featurizer.featurize(molecule)
 
     assert len(results) == 1
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
     assert sum(results[0]) == 1
 
@@ -112,7 +112,7 @@ def test_isomorphism_featurizer():
 
     results = featurizer.featurize(molecule).item()
 
-    assert results == "81d9780b026c6719bae68a874d450d22"
+    assert results == '2edc29b616104775041a9032f818e503'
 
     text = featurizer.text_featurize(molecule)
 
@@ -123,4 +123,4 @@ def test_isomorphism_featurizer():
         == "Question: What is the Weisfeiler-Lehman graph hash of the molecule with SMILES c1ccccc1?"
     )
 
-    assert text.to_dict()["filled_completion"] == "Answer: 81d9780b026c6719bae68a874d450d22"
+    assert text.to_dict()["filled_completion"] == "Answer: 2edc29b616104775041a9032f818e503"

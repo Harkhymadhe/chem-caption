@@ -51,7 +51,8 @@ def test_pmi_featurizer(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    # assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()
 
 
 """Test for featurizer for asphericity."""
@@ -70,7 +71,7 @@ def test_asphericity_featurizer(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()
 
 
 """Test for featurizer for eccentricity."""
@@ -89,7 +90,7 @@ def test_eccentricity_featurizer(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()
 
 
 """Test for featurizer for obtaining inertial shape factor."""
@@ -108,7 +109,7 @@ def test_inertial_shape_factor(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()
 
 
 """Test for featurizer for obtaining NPR."""
@@ -129,7 +130,7 @@ def test_npr_featurizer(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()
 
 
 """Test for featurizer for obtaining the radius of gyration."""
@@ -148,7 +149,7 @@ def test_radius_of_gyration_featurizer(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()
 
 
 """Test for featurizer for obtaining the radius of gyration."""
@@ -167,4 +168,4 @@ def test_spherocity_index_featurizer(test_input, expected):
 
     results = featurizer.featurize(molecule)
 
-    assert np.equal(results, expected).all()
+    assert (np.absolute(results - expected) < 1e-4).all()

@@ -35,6 +35,6 @@ def test_svg_featurizer(test_input):
     featurizer = SVGFeaturizer()
     molecule = MOLECULE(test_input)
 
-    results = featurizer.featurize(molecule)
+    results = featurizer.featurize(molecule)[0][0]
 
     assert SVG_RE.match(results)

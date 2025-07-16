@@ -18,6 +18,12 @@ from chemcaption.featurize.spatial import (
     RadiusOfGyrationFeaturizer,
     SpherocityIndexFeaturizer
 )
+from chemcaption.featurize.substructure import (
+    FragmentSearchFeaturizer,
+    IsomorphismFeaturizer,
+    TopologyCountFeaturizer,
+)
+
 from chemcaption.featurize.symmetry import PointGroupFeaturizer
 from chemcaption.molecules import SMILESMolecule
 
@@ -65,15 +71,17 @@ if __name__ == "__main__":
 
     print("Adding features.")
 
-    featurizers = [PMIFeaturizer(), 
-                   PointGroupFeaturizer(), 
-                   AsphericityFeaturizer(), 
-                   EccentricityFeaturizer(),
-                   InertialShapeFactorFeaturizer(),
-                   NPRFeaturizer(),
-                   RadiusOfGyrationFeaturizer(),
-                   SpherocityIndexFeaturizer()
-                   ]
+    # featurizers = [PMIFeaturizer(), 
+    #                PointGroupFeaturizer(), 
+    #                AsphericityFeaturizer(), 
+    #                EccentricityFeaturizer(),
+    #                InertialShapeFactorFeaturizer(),
+    #                NPRFeaturizer(),
+    #                RadiusOfGyrationFeaturizer(),
+    #                SpherocityIndexFeaturizer()
+    #                ]
+
+    featurizers = [IsomorphismFeaturizer()]
 
     for featurizer in featurizers:
         PROPERTY_BANK = extend_dataset(smiles_list, PROPERTY_BANK, featurizer)

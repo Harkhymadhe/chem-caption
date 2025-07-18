@@ -469,16 +469,16 @@ class ElementCountFeaturizer(ElementMassFeaturizer):
         Returns:
             int: Number of atoms of element in molecule.
         """
-        atom_count = len(
-            [
-                atom
-                for atom in molecule.get_atoms()
-                if (
-                    PERIODIC_TABLE.GetElementName(atom.GetAtomicNum()) == element
-                    or PERIODIC_TABLE.GetElementSymbol(atom.GetAtomicNum()) == element
-                )
-            ]
-        )
+
+        atom_count = []
+
+        for atom in molecule.get_atoms():
+            if PERIODIC_TABLE.GetElementName(atom.GetAtomicNum()) == element:
+                atom_count.append(atom)
+            if PERIODIC_TABLE.GetElementSymbol(atom.GetAtomicNum()) == element:
+                atom_count.append(atom)
+
+        atom_count = len(atom_count)
         return atom_count
 
     def _get_profile(self, molecule: Molecule) -> List[int]:

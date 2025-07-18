@@ -31,7 +31,10 @@ def test_prompt_container():
         completion_type="list",
         completion_names="bond_type_proportion",
         completion_labels="Bond Type Proportion",
-        prompt_template="Question: What is the proportion of unspecified, single, double, triple, quadruple, quintuple, hextuple, one-and-a-half, two-and-a-half, three-and-a-half, four-and-a-half, five-and-a-half, aromatic, ionic, hydrogen, three-center, dative one-electron, dative two-electron, other, and zero-order bonds in the molecule with SMILES {REPR_STRING}?",
+        prompt_template=("Question: What is the proportion of unspecified, single, double, triple, quadruple, "
+                         "quintuple, hextuple, one-and-a-half, two-and-a-half, three-and-a-half, four-and-a-half, "
+                         "five-and-a-half, aromatic, ionic, hydrogen, three-center, dative one-electron, dative "
+                         "two-electron, other, and zero-order bonds in the molecule with SMILES {REPR_STRING}?"),
         completion_template="Answer: {REPR_STRING}",
         constraint="Constraint: Return a list of comma separated floats.",
     )

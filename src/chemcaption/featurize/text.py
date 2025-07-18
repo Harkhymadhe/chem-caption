@@ -73,8 +73,8 @@ class Prompt:
 
         Args:
             template (str): Prompt template.
-            precision_type (str, optional): Level of precision for approximation purposes. Can be `decimal` or `significant`.
-                Defaults to `decimal`.
+            precision_type (str, optional): Level of precision for approximation purposes.
+            Can be `decimal` or `significant`. Defaults to `decimal`.
 
         Returns:
             str: Appropriately formatted template.

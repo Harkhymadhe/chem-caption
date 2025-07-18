@@ -4,7 +4,6 @@
 
 import re
 
-import numpy as np
 import pytest
 
 from chemcaption.featurize.miscellaneous import SVGFeaturizer

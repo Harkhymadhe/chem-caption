@@ -718,8 +718,7 @@ class AtomNucleophilicityFeaturizer(MorfeusFeaturizer):
                 ]
             else:
                 return [
-                    ("local_nucleophilicity_" if self.local else "nucleophilicity_")
-                    + self.aggregation
+                    ("local_nucleophilicity_" if self.local else "nucleophilicity_") + self.aggregation
                 ]
 
     def implementors(self) -> List[str]:
@@ -857,8 +856,7 @@ class AtomElectrophilicityFeaturizer(MorfeusFeaturizer):
                 ]
             else:
                 return [
-                    ("local_electrophilicity_" if self.local else "electrophilicity_")
-                    + self.aggregation
+                    ("local_electrophilicity_" if self.local else "electrophilicity_") + self.aggregation
                 ]
 
     def implementors(self) -> List[str]:

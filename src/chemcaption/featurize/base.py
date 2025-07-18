@@ -222,10 +222,13 @@ class MorfeusFeaturizer(AbstractFeaturizer):
         """Instantiate class.
 
         Args:
-            conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation. Defaults to `None`.
-            morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation. Defaults to `None`.
+            conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
+                Defaults to `None`.
+            morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
+                Defaults to `None`.
             qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
-            aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors. Defaults to `None`.
+            aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors.
+                Defaults to `None`.
                 The aggregator can be one of the following: `mean`, `median`, `std`, `min` or `max`
         """
         super().__init__()
@@ -317,9 +320,8 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
             else:
                 as_range = False
-                print(
-                    +"UserWarning: List of integers passed to `atom_indices` parameter. `as_range` parameter will be refactored to False."
-                )
+                print("UserWarning: List of integers passed to `atom_indices` parameter. "
+                      "`as_range` parameter will be refactored to False.")
 
         else:
             if isinstance(atom_indices, int):
@@ -449,9 +451,11 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecular instance.
-            optimization_method (str, optional): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
+            optimization_method (str, optional): Method to be applied for geometric optimization.
+                Defaults to `GFN2-xTB`.
             procedure (str, optional): QC engine optimization procedure. Defaults to `geometric`.
-            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property. Defaults to `spyrmsd`.
+            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property.
+                Defaults to `spyrmsd`.
 
         Returns:
             ConformerEnsemble: An ensemble of generated conformers.
@@ -480,10 +484,13 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecular instance.
-            num_conformers (str, optional): Number of conformers to return after optimization. Defaults to `1`.
-            optimization_method (str, optional): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
+            num_conformers (str, optional): Number of conformers to return after optimization.
+                Defaults to `1`.
+            optimization_method (str, optional): Method to be applied for geometric optimization.
+                Defaults to `GFN2-xTB`.
             procedure (str, optional): QC engine optimization procedure. Defaults to `geometric`.
-            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property. Defaults to `spyrmsd`.
+            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property.
+                Defaults to `spyrmsd`.
 
         Returns:
             List[Chem.Mol]: A list of generated conformers.
@@ -509,9 +516,11 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         Args:
             molecule (Molecule): Molecular instance.
-            optimization_method (str, optional): Method to be applied for geometric optimization. Defaults to `GFN2-xTB`.
+            optimization_method (str, optional): Method to be applied for geometric optimization.
+                Defaults to `GFN2-xTB`.
             procedure (str, optional): QC engine optimization procedure. Defaults to `geometric`.
-            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property. Defaults to `spyrmsd`.
+            rmsd_method (str, optional): Base method for conformer pruning w.r.t RMSD property.
+                Defaults to `spyrmsd`.
 
         Returns:
             Molecule: Molecular instance.

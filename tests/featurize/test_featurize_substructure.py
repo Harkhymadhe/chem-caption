@@ -41,7 +41,8 @@ def test_topology_count_featurizer():
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
         text.to_dict()["filled_prompt"]
-        == "Question: What are the numbers of topologically unique environments of C, H, N, O, P, S, F, Cl, Br, and I of the molecule with SMILES c1ccccc1?"
+        == ("Question: What are the numbers of topologically unique environments of C, H, N, O, P, "
+            "S, F, Cl, Br, and I of the molecule with SMILES c1ccccc1?")
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 1, 1, 0, 0, 0, 0, 0, 0, 0, and 0"
@@ -63,7 +64,9 @@ def test_fragment_search_featurizer():
 
     assert (
         text.to_dict()["filled_prompt"]
-        == "Question: What are the counts of carboxyl, carbonyl, ether, alkanol, thiol, halogen, amine, amide, and ketone in the molecule with SMILES c1ccccc1?\nConstraint: return a list of integers."
+        == ("Question: What are the counts of carboxyl, carbonyl, ether, alkanol, thiol, halogen, "
+            "amine, amide, and ketone in the molecule with SMILES c1ccccc1?\nConstraint: return a "
+            "list of integers.")
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 0, 0, 0, 0, 0, 0, 0, 0, and 0"
@@ -80,8 +83,9 @@ def test_fragment_search_featurizer():
 
     assert (
         text.to_dict()["filled_prompt"]
-        == "Question: Are carboxyl, carbonyl, ether, alkanol, thiol, halogen, amine, amide, and ketone in the molecule with SMILES c1ccccc1?\nConstraint: return a list of 1s and 0s if the pattern is present or not."
-        ""
+        == ("Question: Are carboxyl, carbonyl, ether, alkanol, thiol, halogen, amine, amide, and "
+            "ketone in the molecule with SMILES c1ccccc1?\nConstraint: return a list of 1s and 0s "
+            "if the pattern is present or not.")
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 0, 0, 0, 0, 0, 0, 0, 0, and 0"
@@ -98,7 +102,8 @@ def test_fragment_search_featurizer():
 
     assert (
         text.to_dict()["filled_prompt"]
-        == "Question: Is benzene in the molecule with SMILES c1ccccc1?\nConstraint: return a list of 1s and 0s if the pattern is present or not."
+        == ("Question: Is benzene in the molecule with SMILES c1ccccc1?\nConstraint: return a list "
+            "of 1s and 0s if the pattern is present or not.")
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 1"

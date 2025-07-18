@@ -11,7 +11,6 @@ __all__ = [
 ]
 
 from chemcaption.featurize.adaptor import ValenceElectronCountAdaptor
-from chemcaption.featurize.base import MultipleFeaturizer
 from chemcaption.featurize.bonds import (
     BondOrderFeaturizer,
     BondTypeCountFeaturizer,
@@ -86,8 +85,7 @@ def get_smarts_featurizers() -> List:
 
 
 FEATURIZER = MultipleFeaturizer(
-    get_smarts_featurizers()
-    + [
+    get_smarts_featurizers() + [
         AtomCountFeaturizer(),
         ValenceElectronCountAdaptor(),
         RotableBondCountFeaturizer(),

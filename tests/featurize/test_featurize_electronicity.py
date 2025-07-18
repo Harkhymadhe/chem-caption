@@ -31,7 +31,8 @@ def test_hydrogen_acceptor_count_featurizer():
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
         text.to_dict()["filled_prompt"]
-        == "Question: What is the number of hydrogen bond acceptors of the molecule with SMILES O=C1C=CC(=O)C(C(=O)O)=C1?"
+        == ("Question: What is the number of hydrogen bond acceptors of the "
+            "molecule with SMILES O=C1C=CC(=O)C(C(=O)O)=C1?")
     )
     assert text.to_dict()["filled_completion"] == "Answer: 4"
 

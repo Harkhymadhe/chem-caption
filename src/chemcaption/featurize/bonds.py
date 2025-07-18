@@ -210,7 +210,8 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         Initialize class.
 
         Args:
-            count (bool, optional): If set to True, count pattern frequency. Otherwise, only encode presence. Defaults to `True`.
+            count (bool, optional): If set to True, count pattern frequency.
+                Otherwise, only encode presence. Defaults to `True`.
             bond_type (Union[str, List[str]], optional): Type of bond to enumerate.
                 If `all`, enumerates all bonds irrespective of type. Defaults to `all`.
         """
@@ -228,7 +229,8 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         if self.count:
             self.constraint = "Constraint: Return a list of comma separated integers."
         else:
-            self.constraint = "Constraint: Return a list of comma separated integer / boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence."
+            self.constraint = ("Constraint: Return a list of comma separated integer "
+                               "/ boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence.")
         self.bond_type = (
             [bond_type.upper()] if isinstance(bond_type, str) else [b.upper() for b in bond_type]
         )
@@ -674,7 +676,7 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
             (List[str]): List of labels of extracted features.
         """
         if self.aggregation is None:
-            return [f"dipole_{i}_{i+1}" for i in range(self.max_index)] + [
+            return [f"dipole_{i}_{i + 1}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
             ]
         else:
@@ -797,7 +799,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
             (List[str]): List of labels of extracted features.
         """
         if self.aggregation is None:
-            return [f"bond_order_{i}_{i+1}" for i in range(self.max_index)] + [
+            return [f"bond_order_{i}_{i + 1}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
             ]
         else:

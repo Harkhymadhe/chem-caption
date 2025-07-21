@@ -91,13 +91,13 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
         Args:
             preset (str): Preset name of the substructures encoded by the SMARTS strings.
                 Predefined presets can be specified as strings, and can be one of:
-                    - `heterocyclic`,
-                    - `rings`,
-                    - `amino`,
-                    - `scaffolds`,
-                    - `warheads` or
-                    - `organic`.
-                    - `all`
+                * `heterocyclic`,
+                * `rings`,
+                * `amino`,
+                * `scaffolds`,
+                * `warheads` or
+                * `organic`.
+                * `all`
 
             count (bool): If set to True, count pattern frequency.
         """
@@ -118,8 +118,9 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
         Featurize single molecule instance.
 
         Return integer array representing the:
-            - frequency or
-            - presence
+            * frequency or
+            * presence
+
             of molecular patterns in a molecule.
 
         Args:

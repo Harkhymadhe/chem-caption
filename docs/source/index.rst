@@ -1,10 +1,10 @@
-chemcaption |release| Documentation
-===================================
+chemcaption |release| 
+=====================
 
 Table of Contents
 -----------------
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Getting Started
    :name: start
 

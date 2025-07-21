@@ -160,6 +160,8 @@ class IsomerismComparator(Comparator):
         Returns:
             np.array: Comparison results. 1 if all extracted features are equal, else 0.
         """
+        assert isinstance(self.featurizers, List)
+
         result = [self.featurizers[0].featurize(molecule).item() for molecule in molecules]
         return np.array([len(set(result)) == 1], dtype=int).reshape((1, -1))
 
@@ -200,6 +202,8 @@ class IsomorphismComparator(Comparator):
         Returns:
             np.array: Comparison results. 1 if all extracted features are equal, else 0.
         """
+        assert isinstance(self.featurizers, List)
+
         result = [self.featurizers[0].featurize(molecule).item() for molecule in molecules]
         return np.array([len(set(result)) == 1], dtype=int).reshape((1, -1))
 
@@ -290,6 +294,8 @@ class DrugLikenessComparator(MultipleComparator):
             (np.array): Comparison results. Array of shape `(1, N)`, where `N` = number of drug-rule comparators.
                 Each column from `0` to`N-1` equals `1` if molecules are similar with respect to drug rule, else `0`.
         """
+        assert isinstance(self.comparators, List)
+
         results = [
             comparator.compare(molecules=molecules, epsilon=epsilon)
             for comparator in self.comparators

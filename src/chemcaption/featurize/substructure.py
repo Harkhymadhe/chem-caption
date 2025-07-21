@@ -107,6 +107,7 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
                 f"Invalid preset name '{preset}'. "
                 f"Valid preset names are: {', '.join(SMARTS_MAP.keys())}."
             )
+
         smarts_set = SMARTS_MAP[preset]
         return cls(
             smarts=smarts_set["smarts"], names=smarts_set["names"], count=count, preset_name=preset

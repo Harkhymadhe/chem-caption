@@ -675,6 +675,8 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"dipole_{i}_{i + 1}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
@@ -798,6 +800,8 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"bond_order_{i}_{i + 1}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)

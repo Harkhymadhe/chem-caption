@@ -3,7 +3,7 @@
 """Utilities for facilitating text featurization."""
 
 from random import shuffle
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Any
 
 import numpy as np
 
@@ -152,7 +152,7 @@ def generate_template(template_type: str = "qa", key: str = "single") -> str:
     return template
 
 
-def inspect_info(info: dict) -> Dict[str, Union[str, List[int], List[float]]]:
+def inspect_info(info: dict) -> Dict:
     """Inspect information dictionary and update contents if necessary.
 
     Args:
@@ -239,12 +239,12 @@ def inspect_template(template: str, template_cardinality: str = "single") -> str
             if term in template:
                 prob = np.random.randn()
                 if prob > 0.5:
-                    template = template.split(term, maxsplit=1)
+                    tmp = template.split(term, maxsplit=1)
                     template = (
-                        template[0]
+                        tmp[0]
                         + term
                         + " (rounded to within {PRECISION} {PRECISION_TYPE})"
-                        + template[-1]
+                        + tmp[-1]
                     )
                     break
                 else:
@@ -255,7 +255,7 @@ def inspect_template(template: str, template_cardinality: str = "single") -> str
     return template
 
 
-def generate_info(info_cardinality: str = "single") -> Dict[str, Union[str, float, int]]:
+def generate_info(info_cardinality: str = "single") -> Dict[str, Any]:
     """Generate dictionary of molecular information at random.
 
     Args:

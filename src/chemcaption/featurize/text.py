@@ -3,7 +3,7 @@
 """Classes for representing featurizer output as text."""
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Sized
 
 import numpy as np
 
@@ -19,7 +19,7 @@ __all__ = ["Prompt", "PromptCollection"]
 class Prompt:
     """Encapsulate all things prompt-related."""
 
-    completion: Union[str, float, int, bool, List[Union[str, float, int, bool]]]
+    completion: Sized
     representation: Union[str, List[str]]
     representation_type: Union[str, float, int, bool, np.array]
     completion_type: Union[str, float, int, bool, np.array]
@@ -39,9 +39,10 @@ class Prompt:
             Dict[str, Any]: Dictionary containing all relevant prompt-related information.
         """
 
-        return self.__dict__()
-
-    def __dict__(self) -> Dict[str, Any]:
+        return self.__dict__
+    
+    @property
+    def __dict__(self) -> Dict:
         """Return dictionary representation of object.
 
         Args:
@@ -67,8 +68,12 @@ class Prompt:
             ),
             "filled_completion": self.fill_template(self.completion_template),
         }
+    
+    @__dict__.setter
+    def __dict__(self, value):
+        raise NotImplemented
 
-    def fill_template(self, template: str, precision_type: str = "decimal") -> str:
+    def fill_template(self, template: Any, precision_type: str = "decimal") -> str:
         """Fill up the prompt template with appropriate values.
 
         Args:
@@ -102,7 +107,7 @@ class Prompt:
         Returns:
             str: Appropriately formatted template.
         """
-        return str(self.__dict__())
+        return str(self.__dict__)
 
     def to_meta_yaml(self):
         """Convert all prompt information from string to YAML format."""
@@ -128,7 +133,7 @@ class PromptCollection:
         prompst (List[Prompt]): list of prompt objects.
     """
 
-    def __init__(self, prompts: List[Prompt]):
+    def __init__(self, prompts: List):
         """ "Class initializer."""
 
         self.prompts = prompts

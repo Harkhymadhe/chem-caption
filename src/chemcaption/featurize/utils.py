@@ -3,7 +3,7 @@
 """Utilities for `featurize` module."""
 
 from functools import lru_cache
-from typing import List, Tuple
+from typing import List, Tuple, Any
 
 import numpy as np
 from pymatgen.core import IMolecule  # use immutable for caching
@@ -23,7 +23,7 @@ __all__ = [
 ]
 
 
-def join_list_elements(elements) -> str:
+def join_list_elements(elements: Any) -> str:
     """Join list elements into a string. First elements separated by comma, last element separated by `and`."""
     if len(elements) == 1:
         return str(elements[0])
@@ -46,7 +46,7 @@ def _pmg_mol_to_pointgroup_analyzer(mol):
     return analyzer
 
 
-def get_atom_symbols_and_positions(conf: List) -> Tuple[List, List]:
+def get_atom_symbols_and_positions(conf: Any) -> Tuple[List, List]:
     """Returns a touple of atom symbols and positions.
 
     Args:

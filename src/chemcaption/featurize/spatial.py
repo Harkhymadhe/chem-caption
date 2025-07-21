@@ -53,7 +53,7 @@ class SpatialFeaturizer(AbstractFeaturizer):
         self.use_masses = use_masses
         self.force = force
 
-        self.FUNCTION_MAP = None
+        self.FUNCTION_MAP: Optional[Dict] = None
         self._conf_gen_kwargs = (
             frozendict(conformer_generation_kwargs)
             if conformer_generation_kwargs
@@ -81,6 +81,8 @@ class SpatialFeaturizer(AbstractFeaturizer):
         Returns:
             List[str]: List of ordered function keys.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+        
         keys = list(k for k in self.FUNCTION_MAP.keys())
         keys.sort()
         return keys
@@ -97,6 +99,8 @@ class SpatialFeaturizer(AbstractFeaturizer):
         Returns:
             List[Union[int, float]]: List of computed results for different variants of interest.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         keys = self._base_rdkit_utility_keys()
         results = [self.FUNCTION_MAP[idx](*x, **y) for idx in keys]
         return results
@@ -428,6 +432,8 @@ class NPRFeaturizer(SpatialFeaturizer):
         Returns:
             np.array: Array containing value(s) for NPR.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         mol = molecule.rdkit_mol
 
         mol = self._get_conformer(mol)
@@ -546,6 +552,8 @@ class PMIFeaturizer(SpatialFeaturizer):
         Returns:
             np.array: Array containing value(s) for PMI.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         mol = molecule.rdkit_mol
 
         mol = self._get_conformer(mol)
@@ -670,6 +678,8 @@ class AtomVolumeFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"solvent_accessible_atom_volume_{i}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)

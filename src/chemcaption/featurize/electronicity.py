@@ -573,6 +573,9 @@ class AtomChargeFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"atom_charge_{i}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
@@ -705,6 +708,8 @@ class AtomNucleophilicityFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [
                 (f"atom_{i}_local_nucleophilicity" if self.local else f"atom_{i}_nucleophilicity")
@@ -843,6 +848,8 @@ class AtomElectrophilicityFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [
                 (f"atom_{i}_local_electrophilicity" if self.local else f"atom_{i}_electrophilicity")

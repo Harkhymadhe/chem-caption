@@ -84,7 +84,7 @@ class MoleculeGraph(nx.Graph):
 
         return graph
 
-    def weisfeiler_lehman_graph_hash(self) -> str:
+    def weisfeiler_lehman_graph_hash(self) -> Union[str, None]:
         """Return graph hash according to Weisfeiler-Lehman isomorphism test.
 
         Args:

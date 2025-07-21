@@ -2,7 +2,7 @@
 
 """Test feature names and labels for uniqueness."""
 
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Tuple
 
 from chemcaption.featurize.base import MultipleFeaturizer
 
@@ -85,7 +85,8 @@ def get_smarts_featurizers() -> List:
 
 
 FEATURIZER = MultipleFeaturizer(
-    get_smarts_featurizers() + [
+    get_smarts_featurizers()
+    + [
         AtomCountFeaturizer(),
         ValenceElectronCountAdaptor(),
         RotableBondCountFeaturizer(),

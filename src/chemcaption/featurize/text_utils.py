@@ -3,7 +3,7 @@
 """Utilities for facilitating text featurization."""
 
 from random import shuffle
-from typing import Dict, List, Union, Any
+from typing import Any, Dict
 
 import numpy as np
 

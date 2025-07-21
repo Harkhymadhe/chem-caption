@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from typing import Dict, List
-
 """Presets for SMARTS and molecular substructure matching."""
+
+from typing import Dict, List
 
 __all__ = [
     "HETEROCYCLIC",

@@ -17,12 +17,15 @@ import os
 import re
 import sys
 from datetime import date
-
 from pprint import pformat
+
+
 def object_description(object) -> str:
     return pformat(object, indent=4)
 
+
 from sphinx.util import inspect
+
 inspect.object_description = object_description
 
 sys.path.insert(0, os.path.abspath("../../src"))

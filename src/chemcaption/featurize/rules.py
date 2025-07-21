@@ -108,8 +108,10 @@ class LipinskiFilterFeaturizer(AbstractFeaturizer):
             np.array: number of Lipinski Rule of 5 violations.
         """
         num_violations = (
-            self._mass_violation(molecule) + self._log_p_violation(molecule)
-            + self._hydrogen_bond_acceptor_violation(molecule) + self._hydrogen_bond_acceptor_violation(molecule)
+            self._mass_violation(molecule)
+            + self._log_p_violation(molecule)
+            + self._hydrogen_bond_acceptor_violation(molecule)
+            + self._hydrogen_bond_acceptor_violation(molecule)
         ).astype(int)
 
         return num_violations

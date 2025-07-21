@@ -3,7 +3,7 @@
 """Classes for representing featurizer output as text."""
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union, Sized
+from typing import Any, Dict, List, Optional, Sized, Union
 
 import numpy as np
 
@@ -40,7 +40,7 @@ class Prompt:
         """
 
         return self.__dict__
-    
+
     @property
     def __dict__(self) -> Dict:
         """Return dictionary representation of object.
@@ -68,10 +68,10 @@ class Prompt:
             ),
             "filled_completion": self.fill_template(self.completion_template),
         }
-    
+
     @__dict__.setter
     def __dict__(self, value):
-        raise NotImplemented
+        raise NotImplementedError
 
     def fill_template(self, template: Any, precision_type: str = "decimal") -> str:
         """Fill up the prompt template with appropriate values.

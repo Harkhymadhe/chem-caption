@@ -74,9 +74,8 @@ def test_leadlikeness_filter_featurizer():
     assert results[0] == 0
 
     text = featurizer.text_featurize(molecule)
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What is the number of lead-likeness filter violations of the molecule with "
-            "SMILES CCCCCCCCCCCCCCCC?")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What is the number of lead-likeness filter violations of the molecule with "
+        "SMILES CCCCCCCCCCCCCCCC?"
     )
     assert text.to_dict()["filled_completion"] == "Answer: 0"

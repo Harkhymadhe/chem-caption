@@ -3,7 +3,7 @@
 """Utilities for `featurize` module."""
 
 from functools import lru_cache
-from typing import List, Tuple, Any
+from typing import Any, List, Tuple
 
 import numpy as np
 from pymatgen.core import IMolecule  # use immutable for caching

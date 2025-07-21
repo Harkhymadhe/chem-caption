@@ -229,8 +229,10 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         if self.count:
             self.constraint = "Constraint: Return a list of comma separated integers."
         else:
-            self.constraint = ("Constraint: Return a list of comma separated integer "
-                               "/ boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence.")
+            self.constraint = (
+                "Constraint: Return a list of comma separated integer "
+                "/ boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence."
+            )
         self.bond_type = (
             [bond_type.upper()] if isinstance(bond_type, str) else [b.upper() for b in bond_type]
         )
@@ -443,7 +445,7 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         Return integer array representing the:
             * frequency or
             * presence
-            
+
             of bond types in a molecule.
 
         Args:

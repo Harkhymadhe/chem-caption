@@ -102,10 +102,9 @@ def test_element_mass_featurizer():
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
 
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What are the total masses of Carbon, Hydrogen, Nitrogen, and "
-            "Oxygen of the molecule with SMILES O?")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What are the total masses of Carbon, Hydrogen, Nitrogen, and "
+        "Oxygen of the molecule with SMILES O?"
     )
     assert text.to_dict()["filled_completion"] == "Answer: 0.0, 2.016, 0.0, and 15.999"
 
@@ -120,10 +119,9 @@ def test_element_mass_proportion_featurizer():
     assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What are the mass proportions of Carbon, Hydrogen, Nitrogen, "
-            "and Oxygen of the molecule with SMILES O?")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What are the mass proportions of Carbon, Hydrogen, Nitrogen, "
+        "and Oxygen of the molecule with SMILES O?"
     )
 
 
@@ -137,10 +135,9 @@ def test_element_count_proportion_featurizer():
     assert len(results[0]) == len(featurizer.feature_labels)
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What are the relative atom counts of Carbon, Hydrogen, Nitrogen, "
-            "and Oxygen of the molecule with SMILES O?")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What are the relative atom counts of Carbon, Hydrogen, Nitrogen, "
+        "and Oxygen of the molecule with SMILES O?"
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 0.0, 0.6667, 0.0, and 0.3333"

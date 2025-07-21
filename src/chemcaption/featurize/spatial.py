@@ -82,7 +82,7 @@ class SpatialFeaturizer(AbstractFeaturizer):
             List[str]: List of ordered function keys.
         """
         assert isinstance(self.FUNCTION_MAP, dict)
-        
+
         keys = list(k for k in self.FUNCTION_MAP.keys())
         keys.sort()
         return keys

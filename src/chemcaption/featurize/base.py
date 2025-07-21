@@ -31,6 +31,7 @@ __all__ = [
 
 PERIODIC_TABLE = rdkit.Chem.GetPeriodicTable()  # Periodic table
 
+
 class AbstractFeaturizer(ABC):
     """Abstract base class for lower level Featurizers."""
 
@@ -293,7 +294,6 @@ class MorfeusFeaturizer(AbstractFeaturizer):
         smiles = Chem.MolToSmiles(mol)
         return cached_conformer(smiles, self._conf_gen_kwargs)
 
-
     @staticmethod
     def _parse_indices(
         atom_indices: Union[int, List[int], Any], as_range: bool = False
@@ -308,7 +308,7 @@ class MorfeusFeaturizer(AbstractFeaturizer):
             as_range (bool): Use `atom_indices` parameter as a range of indices or not. Defaults to `False`
         """
         if as_range:
-            if isinstance(atom_indices, int):   
+            if isinstance(atom_indices, int):
                 atom_indices = range(1, atom_indices + 1)
 
             elif len(atom_indices) == 2:
@@ -320,8 +320,10 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
             else:
                 as_range = False
-                print("UserWarning: List of integers passed to `atom_indices` parameter. "
-                      "`as_range` parameter will be refactored to False.")
+                print(
+                    "UserWarning: List of integers passed to `atom_indices` parameter. "
+                    "`as_range` parameter will be refactored to False."
+                )
 
         else:
             if isinstance(atom_indices, int):
@@ -329,9 +331,7 @@ class MorfeusFeaturizer(AbstractFeaturizer):
 
         return atom_indices, as_range
 
-    def fit_on_bond_counts(
-        self, molecules: Union[List[Molecule], Molecule]
-    ) -> int:
+    def fit_on_bond_counts(self, molecules: Union[List[Molecule], Molecule]) -> int:
         """Fit instance on molecule collection.
 
         Args:
@@ -670,7 +670,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
                 i.e., `N`  >=  len(self.featurizers).
         """
         assert isinstance(self.featurizers, list)
-        
+
         features = [
             feature for f in self.featurizers for feature in f.featurize(molecule).flatten()
         ]
@@ -740,7 +740,7 @@ class MultipleFeaturizer(AbstractFeaturizer):
             self : Instance of self with state updated.
         """
         assert isinstance(self.featurizers, list)
-        
+
         # Type check for AbstractFeaturizer instances
         for ix, featurizer in enumerate(featurizers):
             # Each featurizer must be specifically of type AbstractFeaturizer
@@ -1033,7 +1033,7 @@ class MultipleComparator(Comparator):
             List[str]: List of labels for all features extracted by all comparators.
         """
         assert isinstance(self.comparators, list)
-        
+
         labels = []
         for comparator in self.comparators:
             labels += comparator.feature_labels

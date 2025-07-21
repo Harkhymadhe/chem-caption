@@ -10,26 +10,26 @@ from tqdm import tqdm
 
 from chemcaption.featurize.base import AbstractFeaturizer
 from chemcaption.featurize.spatial import (
-    PMIFeaturizer,
     AsphericityFeaturizer,
     EccentricityFeaturizer,
     InertialShapeFactorFeaturizer,
     NPRFeaturizer,
+    PMIFeaturizer,
     RadiusOfGyrationFeaturizer,
-    SpherocityIndexFeaturizer
+    SpherocityIndexFeaturizer,
 )
 from chemcaption.featurize.substructure import (
     FragmentSearchFeaturizer,
     IsomorphismFeaturizer,
     TopologyCountFeaturizer,
 )
-
 from chemcaption.featurize.symmetry import PointGroupFeaturizer
 from chemcaption.molecules import SMILESMolecule
 
 BASE_DIR = os.getcwd()
 
 MOLECULAR_BANK = pd.read_json(os.path.join(BASE_DIR, "molecular_bank.json"), orient="index")
+
 
 def extend_dataset(
     smiles_list: List[str], dataset: pd.DataFrame, featurizer: AbstractFeaturizer
@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     print("Adding features.")
 
-    # featurizers = [PMIFeaturizer(), 
-    #                PointGroupFeaturizer(), 
-    #                AsphericityFeaturizer(), 
+    # featurizers = [PMIFeaturizer(),
+    #                PointGroupFeaturizer(),
+    #                AsphericityFeaturizer(),
     #                EccentricityFeaturizer(),
     #                InertialShapeFactorFeaturizer(),
     #                NPRFeaturizer(),

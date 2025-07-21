@@ -38,13 +38,12 @@ def test_bond_type_count_featurizer():
     text = bt.text_featurize(pos_key="noun", molecule=molecule)
     assert isinstance(text, Prompt)
 
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What are the numbers of the unspecified, single, double, triple, quadruple, "
-            "quintuple, hextuple, one-and-a-half, two-and-a-half, three-and-a-half, four-and-a-half, "
-            "five-and-a-half, aromatic, ionic, hydrogen, three-center, dative one-electron, dative "
-            "two-electron, other, and zero-order bonds of the molecule with SMILES c1ccccc1?\nConstraint: "
-            "Return a list of comma separated integers.")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What are the numbers of the unspecified, single, double, triple, quadruple, "
+        "quintuple, hextuple, one-and-a-half, two-and-a-half, three-and-a-half, four-and-a-half, "
+        "five-and-a-half, aromatic, ionic, hydrogen, three-center, dative one-electron, dative "
+        "two-electron, other, and zero-order bonds of the molecule with SMILES c1ccccc1?\nConstraint: "
+        "Return a list of comma separated integers."
     )
 
     assert (
@@ -57,13 +56,12 @@ def test_bond_type_count_featurizer():
     text = bt.text_featurize(pos_key="noun", molecule=molecule)
     assert isinstance(text, Prompt)
 
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: Are there any unspecified, single, double, triple, quadruple, quintuple, hextuple, "
-            "one-and-a-half, two-and-a-half, three-and-a-half, four-and-a-half, five-and-a-half, aromatic, "
-            "ionic, hydrogen, three-center, dative one-electron, dative two-electron, other, and zero-order "
-            "bond types in the molecule with SMILES c1ccccc1?\nConstraint: Return a list of comma separated "
-            "integer / boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence.")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: Are there any unspecified, single, double, triple, quadruple, quintuple, hextuple, "
+        "one-and-a-half, two-and-a-half, three-and-a-half, four-and-a-half, five-and-a-half, aromatic, "
+        "ionic, hydrogen, three-center, dative one-electron, dative two-electron, other, and zero-order "
+        "bond types in the molecule with SMILES c1ccccc1?\nConstraint: Return a list of comma separated "
+        "integer / boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence."
     )
 
 
@@ -79,10 +77,9 @@ def test_rotable_bond_proportion_featurizer():
     text = brf.text_featurize(pos_key="noun", molecule=molecule)
     assert isinstance(text, Prompt)
 
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What are the proportions of rotatable and non-rotatable "
-            "bonds of the molecule with SMILES c1ccccc1?")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What are the proportions of rotatable and non-rotatable "
+        "bonds of the molecule with SMILES c1ccccc1?"
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 0.0 and 1.0"
@@ -125,17 +122,15 @@ def test_bond_type_proportion_featurizer():
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
 
     assert isinstance(text, Prompt)
-    assert (
-        text.to_dict()["filled_prompt"]
-        == ("Question: What are the proportions of the unspecified, single, double, "
-            "triple, quadruple, quintuple, hextuple, one-and-a-half, two-and-a-half, "
-            "three-and-a-half, four-and-a-half, five-and-a-half, aromatic, ionic, "
-            "hydrogen, three-center, dative one-electron, dative two-electron, other, "
-            "and zero-order bond types of the molecule with SMILES c1ccccc1?"
-            "\nConstraint: Return a list of comma separated floats.")
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What are the proportions of the unspecified, single, double, "
+        "triple, quadruple, quintuple, hextuple, one-and-a-half, two-and-a-half, "
+        "three-and-a-half, four-and-a-half, five-and-a-half, aromatic, ionic, "
+        "hydrogen, three-center, dative one-electron, dative two-electron, other, "
+        "and zero-order bond types of the molecule with SMILES c1ccccc1?"
+        "\nConstraint: Return a list of comma separated floats."
     )
-    assert (
-        text.to_dict()["filled_completion"]
-        == ("Answer: 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, "
-            "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, and 0.0")
+    assert text.to_dict()["filled_completion"] == (
+        "Answer: 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, "
+        "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, and 0.0"
     )

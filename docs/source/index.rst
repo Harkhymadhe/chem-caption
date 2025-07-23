@@ -1,7 +1,7 @@
-chemcaption |release| 
+chemcaption |release|
 =====================
 
-Table of Contents
+Documentation
 -----------------
 .. toctree::
    :maxdepth: 3
@@ -9,7 +9,8 @@ Table of Contents
    :name: start
 
    installation
-   usage
+   tutorial
+   howto
    api
 
 Indices and Tables

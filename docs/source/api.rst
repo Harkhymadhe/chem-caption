@@ -10,3 +10,4 @@ API Documentation
    text
    molecule
    comparator
+   presets

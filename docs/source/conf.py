@@ -32,12 +32,12 @@ sys.path.insert(0, os.path.abspath("../../src"))
 
 # -- Project information -----------------------------------------------------
 
-project = "chemcaption"
+project = "ChemCaption"
 copyright = f"{date.today().year}, Kevin Maik Jablonka and Benedict Oshomah Emoekabu"
 author = "Kevin Maik Jablonka and Benedict Oshomah Emoekabu"
 
 # The full version, including alpha/beta/rc tags.
-release = "0.0.1-dev"
+release = "1.0.0"
 
 # The short X.Y version.
 parsed_version = re.match(
@@ -123,12 +123,18 @@ pygments_style = "sphinx"
 #
 html_theme = "furo"
 
+html_static_path = ['_static']
+
+html_css_files = [
+    'custom.css',
+]
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 # html_theme_options = {
-#     "collapse_navigation" : True
+#     "use_download_button": True
 # }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -149,8 +155,8 @@ html_theme = "furo"
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-if os.path.exists("logo.png"):
-    html_logo = "logo.png"
+if os.path.exists("_static/logo.png"):
+    html_logo = "_static/logo.png"
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

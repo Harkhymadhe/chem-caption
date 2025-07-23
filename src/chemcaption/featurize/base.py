@@ -619,7 +619,7 @@ class AbstractComparator(ABC):
         Returns:
             List[str]: List of implementors.
         """
-        raise NotImplementedError
+        return ["Benedict Oshomah Emoekabu"]
 
     @property
     def feature_labels(self) -> List[str]:

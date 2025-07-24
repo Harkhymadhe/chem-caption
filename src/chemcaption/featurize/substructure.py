@@ -57,6 +57,7 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
 
         self.prompt_template = "{PROPERTY_NAME} in the molecule with {REPR_SYSTEM} {REPR_STRING}?"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return names of extracted features.
 
@@ -85,25 +86,28 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
 
     @classmethod
     def from_preset(cls, preset: str, count: bool = True):
-        """
+        """Generate class instance with atomic numbers of interest based on predefined presets.
+
         Args:
-            preset (str): Preset name of the substructures
-                encoded by the SMARTS strings.
+            preset (str): Preset name of the substructures encoded by the SMARTS strings.
                 Predefined presets can be specified as strings, and can be one of:
-                    - `heterocyclic`,
-                    - `rings`,
-                    - `amino`,
-                    - `scaffolds`,
-                    - `warheads` or
-                    - `organic`.
-                    - `all`
+                * `heterocyclic`,
+                * `rings`,
+                * `amino`,
+                * `scaffolds`,
+                * `warheads` or
+                * `organic`.
+                * `all`
+
             count (bool): If set to True, count pattern frequency.
         """
+
         if preset not in SMARTS_MAP:
             raise ValueError(
                 f"Invalid preset name '{preset}'. "
                 f"Valid preset names are: {', '.join(SMARTS_MAP.keys())}."
             )
+
         smarts_set = SMARTS_MAP[preset]
         return cls(
             smarts=smarts_set["smarts"], names=smarts_set["names"], count=count, preset_name=preset
@@ -114,8 +118,9 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
         Featurize single molecule instance.
 
         Return integer array representing the:
-            - frequency or
-            - presence
+            * frequency or
+            * presence
+
             of molecular patterns in a molecule.
 
         Args:
@@ -137,6 +142,7 @@ class FragmentSearchFeaturizer(AbstractFeaturizer):
 
         return np.array(results).reshape((1, -1))
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -198,7 +204,17 @@ class IsomorphismFeaturizer(AbstractFeaturizer):
 
         self.label = ["weisfeiler_lehman_hash"]
 
+    @property
     def feature_labels(self) -> List[str]:
+        """Return feature label(s).
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of labels for extracted features.
+        """
+
         return ["weisfeiler_lehman_hash"]
 
     def featurize(self, molecule: Molecule) -> np.array:
@@ -241,6 +257,7 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
         super().__init__()
         self.reference_atomic_numbers = reference_atomic_numbers
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -255,6 +272,7 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
             for atomic_number in self.reference_atomic_numbers
         ]
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 

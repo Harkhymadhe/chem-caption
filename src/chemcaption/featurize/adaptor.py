@@ -49,6 +49,8 @@ class RDKitAdaptor(AbstractFeaturizer):
 
         Extract and return features from molecular object.
 
+        The features are extracted based on the RDKit function provided.
+
         Args:
             molecule (Molecule): Molecule representation.
 
@@ -65,6 +67,7 @@ class RDKitAdaptor(AbstractFeaturizer):
         )
         return np.array(feature).reshape((1, -1))
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

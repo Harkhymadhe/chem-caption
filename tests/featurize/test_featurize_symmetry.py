@@ -27,9 +27,9 @@ def test_rotational_symmetry_number():
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert isinstance(text, Prompt)
-    assert "filled_prompt" in text.__dict__()
+    assert "filled_prompt" in text.__dict__
     assert (
-        text.__dict__()["filled_prompt"]
+        text.__dict__["filled_prompt"]
         == "Question: What is the rotational symmetry number of the molecule with SMILES CO?"
     )
     assert text.to_dict()["filled_completion"] == "Answer: 1"

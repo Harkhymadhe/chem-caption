@@ -269,15 +269,21 @@ def test_drug_likeness_comparator(test_values):
     string_and_values_pairs = [string_and_values for string_and_values in test_values]
     molecules = [MOLECULE(s[0]) for s in string_and_values_pairs]
 
-    expected = set([s[1][0] for s in string_and_values_pairs])
+    expected = np.array([s[1] for s in string_and_values_pairs])
+    cmp = []
+    for i in range(3):
+        if np.all(expected[:, i] == expected[0, i]):
+            cmp.append(1)
+        else:
+            cmp.append(0)
 
-    expected = np.array([1]) if len(expected) == 1 else np.array([0])
+    cmp = np.array(cmp)
 
     featurizer = DrugLikenessComparator()
 
-    results = featurizer.compare(molecules)
+    results = featurizer.compare(molecules)[0]
 
-    assert np.equal(results, expected).all()
+    assert np.equal(cmp, results).all()
 
 
 """Test for lead-likeness comparator."""

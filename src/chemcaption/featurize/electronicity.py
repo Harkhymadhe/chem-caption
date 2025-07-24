@@ -45,6 +45,7 @@ class HydrogenAcceptorCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -97,6 +98,7 @@ class HydrogenDonorCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -156,6 +158,7 @@ class ValenceElectronCountFeaturizer(AbstractFeaturizer):
             },
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -208,7 +211,7 @@ class ElectronAffinityFeaturizer(MorfeusFeaturizer):
         Args:
             conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
             morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
-            qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
+            qc_optimize (bool, optional): Run QCEngine optimization harness. Defaults to `False`.
         """
         super().__init__(
             conformer_generation_kwargs=conformer_generation_kwargs,
@@ -224,7 +227,7 @@ class ElectronAffinityFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns electron affinity of the molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -237,6 +240,7 @@ class ElectronAffinityFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_ea(**self.morfeus_kwargs)]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -291,7 +295,7 @@ class IonizationPotentialFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the ionization potential of given molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -304,6 +308,7 @@ class IonizationPotentialFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_ip(**self.morfeus_kwargs)]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -358,7 +363,7 @@ class HOMOEnergyFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Return energy of highest occupied molecular orbital.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -372,6 +377,7 @@ class HOMOEnergyFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_homo()]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -397,7 +403,7 @@ class HOMOEnergyFeaturizer(MorfeusFeaturizer):
 
 
 class LUMOEnergyFeaturizer(MorfeusFeaturizer):
-    """Featurize molecule and return energy of lowest unoccupied molecular orbital."""
+    """Featurize molecule and return energy of highest occupied molecular orbital"""
 
     def __init__(
         self,
@@ -426,7 +432,7 @@ class LUMOEnergyFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns energy of highest occupied molecular orbital
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -439,6 +445,7 @@ class LUMOEnergyFeaturizer(MorfeusFeaturizer):
         xtb = self._get_morfeus_instance(molecule=molecule)
         return np.array([xtb.get_lumo()]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -502,7 +509,7 @@ class AtomChargeFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns charges for atoms in molecules.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -556,6 +563,7 @@ class AtomChargeFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -565,6 +573,9 @@ class AtomChargeFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"atom_charge_{i}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
@@ -630,7 +641,7 @@ class AtomNucleophilicityFeaturizer(MorfeusFeaturizer):
         self.max_index = max_index
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Returns nucleophilicity value for each atom in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -687,6 +698,7 @@ class AtomNucleophilicityFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -696,6 +708,8 @@ class AtomNucleophilicityFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [
                 (f"atom_{i}_local_nucleophilicity" if self.local else f"atom_{i}_nucleophilicity")
@@ -768,7 +782,7 @@ class AtomElectrophilicityFeaturizer(MorfeusFeaturizer):
         self.max_index = max_index
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Returns electrophilicity values for each atom in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -825,6 +839,7 @@ class AtomElectrophilicityFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -834,6 +849,8 @@ class AtomElectrophilicityFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [
                 (f"atom_{i}_local_electrophilicity" if self.local else f"atom_{i}_electrophilicity")
@@ -893,7 +910,7 @@ class MoleculeNucleophilicityFeaturizer(MorfeusFeaturizer):
         ]
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Returns the global nucleophilicity value for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -912,6 +929,7 @@ class MoleculeNucleophilicityFeaturizer(MorfeusFeaturizer):
 
         return np.array([nucleophilicity]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -965,7 +983,7 @@ class MoleculeElectrophilicityFeaturizer(MorfeusFeaturizer):
         ]
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Returns global electrophilicity value for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -984,6 +1002,7 @@ class MoleculeElectrophilicityFeaturizer(MorfeusFeaturizer):
 
         return np.array([electrophilicity]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -1037,7 +1056,7 @@ class MoleculeNucleofugalityFeaturizer(MorfeusFeaturizer):
         ]
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Returns the global nucleofugality value for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -1056,6 +1075,7 @@ class MoleculeNucleofugalityFeaturizer(MorfeusFeaturizer):
 
         return np.array([nucleofugality]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -1109,7 +1129,7 @@ class MoleculeElectrofugalityFeaturizer(MorfeusFeaturizer):
         ]
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Returns the global electrofugality value for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -1128,6 +1148,7 @@ class MoleculeElectrofugalityFeaturizer(MorfeusFeaturizer):
 
         return np.array([electrofugality]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

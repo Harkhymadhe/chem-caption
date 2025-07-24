@@ -2,8 +2,7 @@
 
 """Test feature names and labels for uniqueness."""
 
-from typing import Dict, List, Tuple, Union
-
+from typing import Dict, List, Tuple
 
 from chemcaption.featurize.base import MultipleFeaturizer
 
@@ -12,7 +11,6 @@ __all__ = [
 ]
 
 from chemcaption.featurize.adaptor import ValenceElectronCountAdaptor
-from chemcaption.featurize.base import MultipleFeaturizer
 from chemcaption.featurize.bonds import (
     BondOrderFeaturizer,
     BondTypeCountFeaturizer,
@@ -51,7 +49,6 @@ from chemcaption.featurize.rules import (
     LeadLikenessFilterFeaturizer,
     LipinskiFilterFeaturizer,
 )
-
 from chemcaption.featurize.spatial import (
     AsphericityFeaturizer,
     EccentricityFeaturizer,
@@ -63,15 +60,24 @@ from chemcaption.featurize.spatial import (
 )
 from chemcaption.featurize.stereochemistry import ChiralCenterCountFeaturizer
 from chemcaption.featurize.substructure import (
-    IsomorphismFeaturizer,
     FragmentSearchFeaturizer,
+    IsomorphismFeaturizer,
     TopologyCountFeaturizer,
 )
 from chemcaption.featurize.symmetry import PointGroupFeaturizer, RotationalSymmetryNumberFeaturizer
 from chemcaption.presets import ALL_SMARTS
 
 
-def get_smarts_featurizers():
+def get_smarts_featurizers() -> List:
+    """Return smart featurizers.
+
+    Args:
+        None.
+
+    Returns:
+        list: list of featurizers
+    """
+
     featurizers = []
     for name, smarts in ALL_SMARTS.items():
         featurizers.append(FragmentSearchFeaturizer([smarts], names=[name]))
@@ -132,7 +138,7 @@ FEATURIZER = MultipleFeaturizer(
 
 def get_repetitive_labels(
     featurizer: MultipleFeaturizer,
-) -> Tuple[Dict[str, Dict[str, Union[int, List[str]]]], List[str]]:
+) -> Tuple[Dict[str, Dict], List[str]]:
     """Returns all repeated labels.
 
     Args:
@@ -143,11 +149,13 @@ def get_repetitive_labels(
             - Dictionary of information for repeated labels and
             - List of all labels.
     """
-    all_labels = featurizer.feature_labels()
-    repetitive_labels = {}
+    all_labels = featurizer.feature_labels
+    repetitive_labels: Dict[str, Dict] = {}
+
+    assert isinstance(featurizer.featurizers, List)
 
     for f in featurizer.featurizers:
-        labels = f.feature_labels()
+        labels = f.feature_labels
         for label in labels:
             if label in all_labels:
                 if label not in repetitive_labels:
@@ -163,6 +171,8 @@ def get_repetitive_labels(
 
 
 if __name__ == "__main__":
+    assert isinstance(FEATURIZER.featurizers, List)
+
     repetitive_labels, all_labels = get_repetitive_labels(FEATURIZER)
     num_repeated_labels = len(repetitive_labels)
 

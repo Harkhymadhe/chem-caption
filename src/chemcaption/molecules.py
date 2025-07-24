@@ -24,12 +24,6 @@ __all__ = [
     "PERIODIC_TABLE",
 ]
 
-
-# Define molecule type alias
-Molecule: TypeAlias = Union["SMILESMolecule", "InChIMolecule", "SELFIESMolecule"]
-
-"""Molecular type alias."""
-
 PERIODIC_TABLE = rdkit.Chem.GetPeriodicTable()  # Periodic table
 
 """Graph representation"""
@@ -90,7 +84,7 @@ class MoleculeGraph(nx.Graph):
 
         return graph
 
-    def weisfeiler_lehman_graph_hash(self) -> str:
+    def weisfeiler_lehman_graph_hash(self) -> Union[str, None]:
         """Return graph hash according to Weisfeiler-Lehman isomorphism test.
 
         Args:
@@ -99,7 +93,7 @@ class MoleculeGraph(nx.Graph):
         Returns:
             str: Weisfeiler-Lehman graph hash.
         """
-        if not self._hash:
+        if self._hash is None:
             self._hash = nx.weisfeiler_lehman_graph_hash(self.graph)
         return self._hash
 
@@ -131,7 +125,6 @@ class AbstractMolecule(ABC):
     def rdkit_mol(self, mol: Chem.Mol) -> None:
         """Set molecular representation via rdkit."""
         self._rdkit_mol = mol
-        return
 
     def __repr__(self) -> str:
         """Return string representation of molecule object.
@@ -259,3 +252,8 @@ DISPATCH_MAP = {
     "selfies": SELFIESMolecule,
     "inchi": InChIMolecule,
 }
+
+"""Molecular type alias."""
+
+# Define molecule type alias
+Molecule: TypeAlias = Union[SMILESMolecule, InChIMolecule, SELFIESMolecule]

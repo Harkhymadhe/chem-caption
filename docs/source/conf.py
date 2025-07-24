@@ -17,24 +17,34 @@ import os
 import re
 import sys
 from datetime import date
+from pprint import pformat
+
+
+def object_description(object) -> str:
+    return pformat(object, indent=4)
+
+
+from sphinx.util import inspect
+
+inspect.object_description = object_description
 
 sys.path.insert(0, os.path.abspath("../../src"))
 
 # -- Project information -----------------------------------------------------
 
-project = "chemcaption"
+project = "ChemCaption"
 copyright = f"{date.today().year}, Kevin Maik Jablonka and Benedict Oshomah Emoekabu"
 author = "Kevin Maik Jablonka and Benedict Oshomah Emoekabu"
 
 # The full version, including alpha/beta/rc tags.
-release = "0.0.1-dev"
+release = "1.0.0"
 
 # The short X.Y version.
 parsed_version = re.match(
-    "(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:-(?P<release>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+(?P<build>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?",
+    r"""(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:-(?P<release>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+(?P<build>[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?""",
     release,
 )
-version = parsed_version.expand("\g<major>.\g<minor>.\g<patch>")
+version = parsed_version.expand("\\g<major>.\\g<minor>.\\g<patch>")
 
 
 # -- General configuration ---------------------------------------------------
@@ -62,6 +72,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.coverage",
 ]
 
 intersphinx_mapping = {
@@ -112,11 +123,19 @@ pygments_style = "sphinx"
 #
 html_theme = "furo"
 
+html_static_path = ['_static']
+
+html_css_files = [
+    'custom.css',
+]
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+# html_theme_options = {
+#     "use_download_button": True
+# }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -136,8 +155,8 @@ html_theme = "furo"
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-if os.path.exists("logo.png"):
-    html_logo = "logo.png"
+if os.path.exists("_static/logo.png"):
+    html_logo = "_static/logo.png"
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

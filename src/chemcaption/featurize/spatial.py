@@ -53,7 +53,7 @@ class SpatialFeaturizer(AbstractFeaturizer):
         self.use_masses = use_masses
         self.force = force
 
-        self.FUNCTION_MAP = None
+        self.FUNCTION_MAP: Optional[Dict] = None
         self._conf_gen_kwargs = (
             frozendict(conformer_generation_kwargs)
             if conformer_generation_kwargs
@@ -81,6 +81,8 @@ class SpatialFeaturizer(AbstractFeaturizer):
         Returns:
             List[str]: List of ordered function keys.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         keys = list(k for k in self.FUNCTION_MAP.keys())
         keys.sort()
         return keys
@@ -97,6 +99,8 @@ class SpatialFeaturizer(AbstractFeaturizer):
         Returns:
             List[Union[int, float]]: List of computed results for different variants of interest.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         keys = self._base_rdkit_utility_keys()
         results = [self.FUNCTION_MAP[idx](*x, **y) for idx in keys]
         return results
@@ -151,6 +155,7 @@ class EccentricityFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "eccentricity"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -218,6 +223,7 @@ class AsphericityFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "asphericity"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -286,6 +292,7 @@ class InertialShapeFactorFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "inertial shape factor"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -367,6 +374,7 @@ class NPRFeaturizer(SpatialFeaturizer):
             2: Descriptors3D.NPR2,
         }
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -402,6 +410,7 @@ class NPRFeaturizer(SpatialFeaturizer):
             return [f"npr{i}_value" for i in range(1, 3)]
         return [f"npr{self.variant}_value"]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -423,6 +432,8 @@ class NPRFeaturizer(SpatialFeaturizer):
         Returns:
             np.array: Array containing value(s) for NPR.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         mol = molecule.rdkit_mol
 
         mol = self._get_conformer(mol)
@@ -445,7 +456,7 @@ class NPRFeaturizer(SpatialFeaturizer):
 
 
 class PMIFeaturizer(SpatialFeaturizer):
-    """Featurizer to return the normalized principal moments ratio (NPR) value of a molecule."""
+    """Featurizer to return the principal moments of inertia (PMI) value of a molecule."""
 
     def __init__(
         self,
@@ -494,6 +505,7 @@ class PMIFeaturizer(SpatialFeaturizer):
             return [f"pmi{i}_value" for i in range(1, 4)]
         return [f"pmi{self.variant}_value"]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -505,6 +517,7 @@ class PMIFeaturizer(SpatialFeaturizer):
         """
         return self._parse_labels()
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -539,6 +552,8 @@ class PMIFeaturizer(SpatialFeaturizer):
         Returns:
             np.array: Array containing value(s) for PMI.
         """
+        assert isinstance(self.FUNCTION_MAP, dict)
+
         mol = molecule.rdkit_mol
 
         mol = self._get_conformer(mol)
@@ -599,7 +614,7 @@ class AtomVolumeFeaturizer(MorfeusFeaturizer):
         self.max_index = max_index
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """Featurize single molecule instance.
+        """Featurize single molecule instance. Return the solvent accessible volume per atom in molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -653,6 +668,7 @@ class AtomVolumeFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -662,6 +678,8 @@ class AtomVolumeFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"solvent_accessible_atom_volume_{i}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
@@ -709,6 +727,7 @@ class SpherocityIndexFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "spherocity index"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -776,6 +795,7 @@ class RadiusOfGyrationFeaturizer(SpatialFeaturizer):
 
         self._names = [{"noun": "radius of gyration"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 

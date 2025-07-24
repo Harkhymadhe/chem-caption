@@ -40,6 +40,7 @@ class MolecularFormulaFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -92,6 +93,7 @@ class MolecularMassFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -148,6 +150,7 @@ class MonoisotopicMolecularMassFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -199,6 +202,8 @@ class ElementMassFeaturizer(AbstractFeaturizer):
         """
         super().__init__()
 
+        self._preset: Union[List[str], Dict[str, str]] = []
+
         if preset is not None:
             self._preset = list(map(lambda x: x.capitalize(), preset))
         else:
@@ -208,6 +213,7 @@ class ElementMassFeaturizer(AbstractFeaturizer):
             "What {VERB} the {PROPERTY_NAME} for the molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
         )
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -220,6 +226,7 @@ class ElementMassFeaturizer(AbstractFeaturizer):
         noun = "masses" if len(self.preset) > 1 else "mass"
         return [{"noun": f"total {noun} of " + join_list_elements(self.preset)}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -232,16 +239,16 @@ class ElementMassFeaturizer(AbstractFeaturizer):
         return [element.lower() + "_mass" for element in self.preset]
 
     @property
-    def preset(self) -> Optional[Union[List[str], Dict[str, str]]]:
+    def preset(self) -> Union[List[str], Dict[str, str]]:
         """Get molecular preset. Getter method."""
         return self._preset
 
     @preset.setter
-    def preset(self, new_preset: Optional[Union[List[str], Dict[str, str]]]) -> None:
+    def preset(self, new_preset: Union[List[str], Dict[str, str]]) -> None:
         """Set molecular preset. Setter method.
 
         Args:
-            new_preset (Optional[Union[List[str], Dict[str, str]]]): List of chemical elements of interest.
+            new_preset (Union[List[str], Dict[str, str]]): List of chemical elements of interest.
 
         Returns:
             None.
@@ -271,8 +278,7 @@ class ElementMassFeaturizer(AbstractFeaturizer):
         else:
             unique_elements = set(self._get_unique_elements(molecules))
 
-        unique_elements = list(unique_elements)
-        self.preset = unique_elements
+        self.preset = list(unique_elements)
 
         return self
 
@@ -302,14 +308,14 @@ class ElementMassFeaturizer(AbstractFeaturizer):
             ]
         return sum(element_mass)
 
-    def _get_profile(self, molecule: Molecule) -> List[float]:
+    def _get_profile(self, molecule: Molecule) -> List:
         """Generate molecular profile based of preset attribute.
 
         Args:
             molecule (Molecule): Molecular representation instance.
 
         Returns:
-            List[float]: List of elemental masses.
+            List: List of elemental masses.
         """
         element_masses = [
             self._get_element_mass(element=element, molecule=molecule) for element in self.preset
@@ -368,6 +374,7 @@ class ElementMassProportionFeaturizer(ElementMassFeaturizer):
         self.prefix = ""
         self.suffix = "_mass_ratio"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -380,6 +387,7 @@ class ElementMassProportionFeaturizer(ElementMassFeaturizer):
         proportion = "proportions" if len(self.preset) > 1 else "proportion"
         return [{"noun": f"mass {proportion} of " + join_list_elements(self.preset)}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """
         Return list of feature labels.
@@ -425,6 +433,7 @@ class ElementCountFeaturizer(ElementMassFeaturizer):
         """Initialize class."""
         super().__init__(preset=preset)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -436,6 +445,7 @@ class ElementCountFeaturizer(ElementMassFeaturizer):
         """
         return ["num_" + element.lower() + "_atoms" for element in self.preset]
 
+    @property
     def get_names(self):
         """Return feature names.
 
@@ -460,26 +470,25 @@ class ElementCountFeaturizer(ElementMassFeaturizer):
         Returns:
             int: Number of atoms of element in molecule.
         """
-        atom_count = len(
-            [
-                atom
-                for atom in molecule.get_atoms()
-                if (
-                    PERIODIC_TABLE.GetElementName(atom.GetAtomicNum()) == element
-                    or PERIODIC_TABLE.GetElementSymbol(atom.GetAtomicNum()) == element
-                )
-            ]
-        )
-        return atom_count
 
-    def _get_profile(self, molecule: Molecule) -> List[int]:
+        atom_count = []
+
+        for atom in molecule.get_atoms():
+            if PERIODIC_TABLE.GetElementName(atom.GetAtomicNum()) == element:
+                atom_count.append(atom)
+            if PERIODIC_TABLE.GetElementSymbol(atom.GetAtomicNum()) == element:
+                atom_count.append(atom)
+
+        return len(atom_count)
+
+    def _get_profile(self, molecule: Molecule) -> List:
         """Generate number of atoms per element based of preset attribute.
 
         Args:
             molecule (Molecule): Molecular representation instance.
 
         Returns:
-            List[int]: List of elemental atom counts.
+            List: List of elemental atom counts.
         """
         atom_counts = [
             self._get_atom_count(element=element, molecule=molecule) for element in self.preset
@@ -524,6 +533,7 @@ class ElementCountProportionFeaturizer(ElementCountFeaturizer):
         """
         super().__init__(preset=preset)
 
+    @property
     def get_names(self):
         """Return feature names.
 
@@ -536,6 +546,7 @@ class ElementCountProportionFeaturizer(ElementCountFeaturizer):
         count = "counts" if len(self.preset) > 1 else "count"
         return [{"noun": f"relative atom {count} of " + join_list_elements(self.preset)}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -585,6 +596,7 @@ class AtomCountFeaturizer(ElementCountFeaturizer):
             }
         ]
 
+    @property
     def get_names(self):
         """Return feature names.
 
@@ -596,6 +608,7 @@ class AtomCountFeaturizer(ElementCountFeaturizer):
         """
         return [{"noun": "total number of atoms"}]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -649,6 +662,7 @@ class DegreeOfUnsaturationFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -665,7 +679,7 @@ class DegreeOfUnsaturationFeaturizer(AbstractFeaturizer):
         """Return the degree of unsaturation for a molecule.
 
         .. math::
-            {\displaystyle \mathrm {DU} =1+{\tfrac {1}{2}}\sum n_{i}(v_{i}-2)}
+            {\\displaystyle \\mathrm {DU} =1+{\tfrac {1}{2}}\\sum n_{i}(v_{i}-2)}
 
         where ni is the number of atoms with valence vi.
 
@@ -677,7 +691,7 @@ class DegreeOfUnsaturationFeaturizer(AbstractFeaturizer):
         """
         # add hydrogens
         mol = molecule.reveal_hydrogens()
-        valence_counter = Counter()
+        valence_counter: Counter = Counter()
         for atom in mol.GetAtoms():
             valence_counter[atom.GetExplicitValence()] += 1
         du = 1 + 0.5 * sum([n * (v - 2) for v, n in valence_counter.items()])

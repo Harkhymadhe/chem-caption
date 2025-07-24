@@ -48,7 +48,7 @@ class SolventAccessibleSurfaceAreaFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the solvent accessible surface area (SASA) value.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -61,6 +61,7 @@ class SolventAccessibleSurfaceAreaFeaturizer(MorfeusFeaturizer):
         morfeus_instance = self._get_morfeus_instance(molecule=molecule, morpheus_instance="sasa")
         return np.array([morfeus_instance.area]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -115,7 +116,7 @@ class SolventAccessibleVolumeFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the solvent accessible volume value for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -128,6 +129,7 @@ class SolventAccessibleVolumeFeaturizer(MorfeusFeaturizer):
         morfeus_instance = self._get_morfeus_instance(molecule=molecule, morpheus_instance="sasa")
         return np.array([morfeus_instance.volume]).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -191,7 +193,7 @@ class SolventAccessibleAtomAreaFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Featurize single molecule instance. Returns the solvent accessible area value for each atom in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -243,6 +245,7 @@ class SolventAccessibleAtomAreaFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -252,6 +255,9 @@ class SolventAccessibleAtomAreaFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
             return [f"solvent_accessible_atom_area_{i}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)

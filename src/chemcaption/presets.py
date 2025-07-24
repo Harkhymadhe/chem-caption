@@ -2,6 +2,8 @@
 
 """Presets for SMARTS and molecular substructure matching."""
 
+from typing import Dict, List
+
 __all__ = [
     "HETEROCYCLIC",
     "SCAFFOLDS",
@@ -28,7 +30,7 @@ __all__ = [
 6. ORGANIC
 """
 
-HETEROCYCLIC = {
+HETEROCYCLIC: Dict[str, List[str]] = {
     "names": [
         "pyridine",
         "indole",
@@ -74,7 +76,7 @@ HETEROCYCLIC = {
 }
 
 
-SCAFFOLDS = {
+SCAFFOLDS: Dict[str, List[str]] = {
     "names": [
         "acetamido",
         "acetoacetyl",
@@ -527,7 +529,7 @@ SCAFFOLDS = {
 }
 
 
-RINGS = {
+RINGS: Dict[str, List[str]] = {
     "names": [
         "cyclopropane",
         "spiropentane",
@@ -757,7 +759,7 @@ RINGS = {
 }
 
 
-AMINO_PROTECTORS = {
+AMINO_PROTECTORS: Dict[str, List[str]] = {
     "names": [
         "tert-butyloxycarbonyl",
         "trityl",
@@ -1306,7 +1308,7 @@ AMINO_PROTECTORS = {
 }
 
 
-WARHEADS = {
+WARHEADS: Dict[str, List[str]] = {
     "names": [
         "propiolamide",
         "fumarate ester",
@@ -1371,7 +1373,7 @@ WARHEADS = {
     ],
 }
 
-ORGANIC = {
+ORGANIC: Dict[str, List[str]] = {
     "names": [
         "carboxyl",
         "carbonyl",
@@ -1400,7 +1402,7 @@ ORGANIC = {
 """Preset map."""
 
 
-ALLSMART_NAMES = (
+ALLSMART_NAMES: List[str] = (
     AMINO_PROTECTORS["names"]
     + RINGS["names"]
     + HETEROCYCLIC["names"]
@@ -1410,7 +1412,7 @@ ALLSMART_NAMES = (
 )
 
 
-ALLSMART_SMARTS = (
+ALLSMART_SMARTS: List[str] = (
     AMINO_PROTECTORS["smarts"]
     + RINGS["smarts"]
     + HETEROCYCLIC["smarts"]
@@ -1420,9 +1422,9 @@ ALLSMART_SMARTS = (
 )
 
 
-ALL_SMARTS = dict(zip(ALLSMART_NAMES, ALLSMART_SMARTS))
+ALL_SMARTS: Dict = dict(zip(ALLSMART_NAMES, ALLSMART_SMARTS))
 
-SMARTS_MAP = dict(
+SMARTS_MAP: Dict[str, Dict] = dict(
     amino=AMINO_PROTECTORS,
     rings=RINGS,
     heterocyclic=HETEROCYCLIC,

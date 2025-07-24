@@ -71,6 +71,26 @@ def extract_molecule_properties(
     return properties
 
 
+def get_molecules(property_bank: pd.DataFrame, representation_name: str = "smiles") -> List[str]:
+    """Return all the molecules of specified representation from the test bank.
+
+    Args:
+        property_bank (pd.DataFrame): Dataframe containing molecular properties.
+        representation_name (str): Name of molecular representation system.
+
+    Returns:
+        List[str]: List of `molecular_string`.
+    """
+
+    representation_name = representation_name.lower()
+
+    property_bank = property_bank.dropna(axis=0, how="any", subset=[representation_name])
+
+    molecular_string = property_bank[representation_name].values.tolist()
+
+    return molecular_string
+
+
 def batch_molecule_properties(
     property_bank: pd.DataFrame,
     representation_name: str = "smiles",

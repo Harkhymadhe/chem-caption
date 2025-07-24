@@ -54,6 +54,8 @@ __all__ = ["main", "generate_featurizer", "persist_data"]
 
 
 def main(args):
+    """Run the data generation."""
+
     args = args.parse_args()
     persist_data(chunk_size=args.chunk_size, delete=args.delete)
     return

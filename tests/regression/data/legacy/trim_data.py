@@ -12,7 +12,9 @@ OLD_PATH = os.path.join(BASE_DIR.replace("legacy", ""), "merged_pubchem_response
 NEW_PATH = os.path.join(BASE_DIR.replace("legacy", ""), "pubchem_response.csv")
 
 
-def data_trimmer(length=100):
+def data_trimmer(length: int = 100):
+    """Trim the test data"""
+
     data = pd.read_csv(OLD_PATH).iloc[:length, :]
 
     data.to_csv(NEW_PATH, index=False)

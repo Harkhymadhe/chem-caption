@@ -66,6 +66,7 @@ class RotableBondCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -78,8 +79,7 @@ class RotableBondCountFeaturizer(AbstractFeaturizer):
         return ["num_rotable_bonds"]
 
     def featurize(self, molecule: Molecule) -> np.array:
-        """
-        Featurize single molecule instance. Count the number of rotable (single, non-terminal) bonds in a molecule.
+        """Featurize single molecule instance. Count the number of rotable (single, non-terminal) bonds in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -121,6 +121,7 @@ class RotableBondProportionFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -141,6 +142,7 @@ class RotableBondProportionFeaturizer(AbstractFeaturizer):
 
         return [{"noun": beginning + d["noun"] + end} for d in self._names]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -208,8 +210,9 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         Initialize class.
 
         Args:
-            count (bool): If set to True, count pattern frequency. Otherwise, only encode presence. Defaults to `True`.
-            bond_type (Union[str, List[str]]): Type of bond to enumerate.
+            count (bool, optional): If set to True, count pattern frequency.
+                Otherwise, only encode presence. Defaults to `True`.
+            bond_type (Union[str, List[str]], optional): Type of bond to enumerate.
                 If `all`, enumerates all bonds irrespective of type. Defaults to `all`.
         """
         super().__init__()
@@ -226,7 +229,10 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         if self.count:
             self.constraint = "Constraint: Return a list of comma separated integers."
         else:
-            self.constraint = "Constraint: Return a list of comma separated integer / boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence."
+            self.constraint = (
+                "Constraint: Return a list of comma separated integer "
+                "/ boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence."
+            )
         self.bond_type = (
             [bond_type.upper()] if isinstance(bond_type, str) else [b.upper() for b in bond_type]
         )
@@ -258,6 +264,7 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
 
         return num_bonds
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -340,6 +347,7 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
             bond_names = [self.prefix + name.lower() + self.suffix for name in bond_names]
         return bond_names
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -435,8 +443,9 @@ class BondTypeCountFeaturizer(AbstractFeaturizer):
         Featurize single molecule instance.
 
         Return integer array representing the:
-            - frequency or
-            - presence
+            * frequency or
+            * presence
+
             of bond types in a molecule.
 
         Args:
@@ -479,6 +488,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         self.prefix = ""
         self.suffix = "_bond_proportion"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return feature names.
 
@@ -488,7 +498,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         Returns:
             List[Dict[str, str]]: List of names for extracted features according to parts-of-speech.
         """
-        bond_types = [label for label in super().feature_labels() if label != "num_bonds"]
+        bond_types = [label for label in super().feature_labels if label != "num_bonds"]
 
         mapped_names = [_MAP_BOND_TYPE_TO_CLEAN_NAME[bond_type] for bond_type in bond_types]
 
@@ -539,6 +549,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         """
         return np.array(self._get_bond_distribution(molecule=molecule)).reshape(1, -1)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -548,7 +559,7 @@ class BondTypeProportionFeaturizer(BondTypeCountFeaturizer):
         Returns:
             List[str]: List of labels of extracted features.
         """
-        labels = [label for label in super().feature_labels() if label != "num_bonds"]
+        labels = [label for label in super().feature_labels if label != "num_bonds"]
         labels = self._parse_bond_names([x.split("_")[1] for x in labels])
 
         return labels
@@ -582,7 +593,7 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
         Args:
             conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
             morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
-            qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
+            qc_optimize (bool, optional): Run QCEngine optimization harness. Defaults to `False`.
             max_index (Optional[int]): Maximum number of atoms/bonds to consider for feature generation.
                 Redundant if `aggregation` is not `None`.
             aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors.
@@ -606,6 +617,8 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
     def featurize(self, molecule: Molecule) -> np.array:
         """
         Featurize single molecule instance.
+
+        Return the dipole moments for a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -655,6 +668,7 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -664,8 +678,10 @@ class DipoleMomentsFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
-            return [f"dipole_{i}_{i+1}" for i in range(self.max_index)] + [
+            return [f"dipole_{i}_{i + 1}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
             ]
         else:
@@ -703,7 +719,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
         Args:
             conformer_generation_kwargs (Optional[Dict[str, Any]]): Configuration for conformer generation.
             morfeus_kwargs (Optional[Dict[str, Any]]): Keyword arguments for morfeus computation.
-            qc_optimize (bool): Run QCEngine optimization harness. Defaults to `False`.
+            qc_optimize (bool, optional): Run QCEngine optimization harness. Defaults to `False`.
             max_index (Optional[int]): Maximum number of atoms/bonds to consider for feature generation.
                 Redundant if `aggregation` is not `None`.
             aggregation (Optional[Union[str, List[str]]]): Aggregation to use on generated descriptors.
@@ -726,7 +742,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
-        Featurize single molecule instance.
+        Return the bond orders for bonds in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
@@ -777,6 +793,7 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
 
         return super().featurize_many(molecules=molecules)
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -786,8 +803,10 @@ class BondOrderFeaturizer(MorfeusFeaturizer):
         Returns:
             (List[str]): List of labels of extracted features.
         """
+        assert isinstance(self.max_index, int)
+
         if self.aggregation is None:
-            return [f"bond_order_{i}_{i+1}" for i in range(self.max_index)] + [
+            return [f"bond_order_{i}_{i + 1}" for i in range(self.max_index)] + [
                 f"atomic_number_{i}" for i in range(self.max_index)
             ]
         else:

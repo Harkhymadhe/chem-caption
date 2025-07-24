@@ -31,4 +31,3 @@ scipy==1.16.0
 selfies==2.2.0
 tqdm==4.67.1
 typing_extensions==4.14.1
-coverage==7.9.2

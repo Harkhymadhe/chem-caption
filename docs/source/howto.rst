@@ -16,7 +16,7 @@ methods we need to extend; ``implementors()``, ``featurize()`` and ``feature_lab
 Custom Featurizer Class
 ------------------------
 
-All of the featurizers are built on the top of the 
+All of the featurizers are built on the top of the
 :obj:`chemcaption.featurize.base.AbstractFeaturizer` class. The skeleton of our
 custom featurizer should look something like this:
 
@@ -31,7 +31,7 @@ custom featurizer should look something like this:
 
     class CustomFeaturizer(AbstractFeaturizer):
         """Our custom featurizer.
-        
+
         This featurizer just returns the representation string length of
         a molecule.
         """
@@ -46,14 +46,14 @@ custom featurizer should look something like this:
         @property
         def feature_labels(self) -> List[str]:
             pass
-        
+
         def featurize(self, molecule: Molecule) -> np.array:
             pass
 
         def implementors(self) -> List[str]:
             return ['LamaLab']
 
-Now we implement the ``featurize()`` method, which in our case would just 
+Now we implement the ``featurize()`` method, which in our case would just
 return one integer value, the length of a string.
 
 .. code-block:: python
@@ -62,7 +62,7 @@ return one integer value, the length of a string.
         return np.array([len(molecule.representation_string)])
 
 
-The resulting feature needs an accompanying label. To do this, we implement the 
+The resulting feature needs an accompanying label. To do this, we implement the
 ``feature_labels`` property method.
 
 .. code-block:: python
@@ -71,14 +71,15 @@ The resulting feature needs an accompanying label. To do this, we implement the
     def feature_labels(self) -> List[str]:
         return ['str_len']
 
-Now that we have a functioning featurizer, we need to provide it with custom 
+
+Now that we have a functioning featurizer, we need to provide it with custom
 prompt template and names so we can utilize the featurizer to the fullest.
 
 Custom Prompt
 --------------
 
 To generate a prompt from our featurizer, we use the ``text_featurize()`` method.
-This method creates the :obj:`chemcaption.text.Prompt` object from the class 
+This method creates the :obj:`chemcaption.text.Prompt` object from the class
 properties we are going to define shortly.
 
 The first thing we define is the names of the features, since we have only one
@@ -88,6 +89,7 @@ the new ``get_names()`` property method will look like the following:
 
     def get_names(self) -> List[Dict[str, str]]:
         return [{'noun': 'length of the representation string'}]
+
 
 To finish up the prompt generation, we add the templates and a constraint to our class.
 
@@ -106,6 +108,7 @@ To finish up the prompt generation, we add the templates and a constraint to our
 
         # Constraint
         self.constraint = "Constraint: Return only a single integer."
+
 
 The custom variables within these templates are as follows:
 

@@ -34,11 +34,11 @@ For more detailed information, check the API page :ref:`Molecules`.
 Featurizing Molecules
 ----------------------
 
-Here we will show you an example of how to use one of our basic featurizers. Since all 
-The featurizers inherit from a base class 
-:obj:`chemcaption.featurize.base.AbstractFeaturizer`, you can use them in a similar way. 
+Here we will show you an example of how to use one of our basic featurizers. Since all
+The featurizers inherit from a base class
+:obj:`chemcaption.featurize.base.AbstractFeaturizer`, you can use them in a similar way.
 
-We can classify our featurizers into two groups, depending on whether we need to specify some 
+We can classify our featurizers into two groups, depending on whether we need to specify some
 presets.
 
 Basic Featurizers
@@ -48,7 +48,7 @@ The majority of featurizers can be used as is, without the need to specify anyth
 the molecule we want to featurize.
 
 One of the groups of these featurizers is :obj:`chemcaption.featurize.bonds`. Here
-We will show you an example of one of them, the 
+We will show you an example of one of them, the
 :obj:`chemcaption.featurize.bonds.BondTypeCountFeaturizer`.
 
 .. code-block:: python
@@ -59,7 +59,7 @@ We will show you an example of one of them, the
     # This featurizer counts the bonds in a molecule
     bt = BondTypeCountFeaturizer()
     molecule = SMILESMolecule("C1=CC=CC=C1")
-    
+
     # Featurizing and labels
     results = bt.featurize(molecule)
     labels = bt.feature_labels
@@ -81,7 +81,7 @@ The ``feature_labels`` is a list of corresponding labels.
     ['num_unspecified_bond', 'num_single_bonds', 'num_double_bonds','num_triple_bonds',
      'num_quadruple_bonds', 'num_quintuple_bonds','num_hextuple_bonds', 'num_oneandahalf_bonds',
      'num_twoandahalf_bonds', 'num_threeandahalf_bonds', 'num_fourandahalf_bonds',
-     'num_fiveandahalf_bonds', 'num_aromatic_bonds', 'num_ionic_bonds', 'num_hydrogen_bonds', 
+     'num_fiveandahalf_bonds', 'num_aromatic_bonds', 'num_ionic_bonds', 'num_hydrogen_bonds',
      'num_threecenter_bonds', 'num_dativeone_bonds', 'num_dative_bonds', 'num_other_bonds',
      'num_zero_bonds', 'num_bonds']
 
@@ -118,8 +118,8 @@ Featurizers with Presets
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some of the featurizers require us to provide presets; they are made to tell the
-featurizer what and how to featurize. For example, presets can define which atoms, 
-functional groups, or rings you are interested in, and the featurizer can return 
+featurizer what and how to featurize. For example, presets can define which atoms,
+functional groups, or rings you are interested in, and the featurizer can return
 their presence, count or percent in a specific molecule.
 
 Now we will show you how to use one of these featurizers to count elements.
@@ -152,8 +152,8 @@ label, corresponding to the name.
     # Results for the featurizer using name
     {'num_carbon_atoms': 6, 'num_hydrogen_atoms': 4, 'num_oxygen_atoms': 0, 'num_bromine_atoms': 2}
 
-Some of the featurizers require more complex presets. For these, we provide a 
-presets with corresponding smarts, which you can see in more detail on the 
+Some of the featurizers require more complex presets. For these, we provide a
+presets with corresponding smarts, which you can see in more detail on the
 :ref:`Presets` page.
 
 Featurizing Many
@@ -162,7 +162,7 @@ Featurizing Many
 We can combine any number of featurizers together and run them as a pipeline to
 generate as many features as we want to for each molecule.
 
-For this, we utilize :obj:`chemcaption.featurize.base.MultipleFeaturizer` as 
+For this, we utilize :obj:`chemcaption.featurize.base.MultipleFeaturizer` as
 follows:
 
 .. code-block:: python
@@ -214,13 +214,13 @@ This us with a combined output consisting of features from both featurizers.
 Prompts
 --------
 
-All of the featurizers can generate prompts simply by calling the 
+All of the featurizers can generate prompts simply by calling the
 ``text_featurize()`` method on the featurizer.
 
 This will create a :obj:`chemcaption.featurize.text.Prompt` object which contains
 all the necessary information for the prompts.
 
-.. code-block:: python 
+.. code-block:: python
 
     from chemcaption.presets import ORGANIC
     from chemcaption.molecules import SMILESMolecule

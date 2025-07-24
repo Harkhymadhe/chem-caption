@@ -14,13 +14,13 @@ from chemcaption.molecules import Molecule
 # Implemented drug rule-related featurizers.
 
 __all__ = [
-    "LipinskiViolationCountFeaturizer",
+    "LipinskiFilterFeaturizer",
     "GhoseFilterFeaturizer",
     "LeadLikenessFilterFeaturizer",
 ]
 
 
-class LipinskiViolationCountFeaturizer(AbstractFeaturizer):
+class LipinskiFilterFeaturizer(AbstractFeaturizer):
     """Returns the number of violations of Lipinski's Rule of 5."""
 
     def __init__(self):
@@ -33,6 +33,7 @@ class LipinskiViolationCountFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -40,54 +41,58 @@ class LipinskiViolationCountFeaturizer(AbstractFeaturizer):
             None.
 
         Returns:
-            (List[str]): List of names of extracted features.
+            List[str]: List of names of extracted features.
         """
         return ["num_lipinski_violations"]
 
-    def _mass_violation(self, molecule: Molecule) -> np.array:
+    @staticmethod
+    def _mass_violation(molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of Lipinski's molar mass rule (must be < 500 Daltons).
 
         Args:
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         molar_mass = Descriptors.ExactMolWt(molecule.rdkit_mol)
         return np.array([molar_mass > 500], dtype=int).reshape((1, -1))
 
-    def _hydrogen_bond_donor_violation(self, molecule: Molecule) -> np.array:
+    @staticmethod
+    def _hydrogen_bond_donor_violation(molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of Lipinski's hydrogen bond donor rule (must be < 5).
 
         Args:
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         hbd = Chem.Lipinski.NumHDonors(molecule.rdkit_mol)
         return np.array([hbd > 5], dtype=int).reshape((1, -1))
 
-    def _hydrogen_bond_acceptor_violation(self, molecule: Molecule) -> np.array:
+    @staticmethod
+    def _hydrogen_bond_acceptor_violation(molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of Lipinski's hydrogen bond acceptor rule (must be < 10).
 
         Args:
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         hba = Chem.Lipinski.NumHAcceptors(molecule.rdkit_mol)
         return np.array([hba > 10], dtype=int).reshape((1, -1))
 
-    def _log_p_violation(self, molecule: Molecule) -> np.array:
+    @staticmethod
+    def _log_p_violation(molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of Lipinski's LogP rule (must be < 5).
 
         Args:
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         log_p = Descriptors.MolLogP(molecule.rdkit_mol)
         return np.array([log_p > 5], dtype=int).reshape((1, -1))
@@ -100,7 +105,7 @@ class LipinskiViolationCountFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular representation.
 
         Returns:
-            (np.array): number of Lipinski Rule of 5 violations.
+            np.array: number of Lipinski Rule of 5 violations.
         """
         num_violations = (
             self._mass_violation(molecule)
@@ -164,6 +169,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -171,7 +177,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             None.
 
         Returns:
-            (List[str]): List of names of extracted features.
+            List[str]: List of names of extracted features.
         """
         return ["num_ghose_violations"]
 
@@ -182,7 +188,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         molar_mass = Descriptors.ExactMolWt(molecule.rdkit_mol)
         return np.array(
@@ -196,7 +202,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         log_p = Chem.Crippen.MolLogP(molecule.rdkit_mol)
         return np.array(
@@ -210,7 +216,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         atom_count = len(molecule.reveal_hydrogens().GetAtoms())
         return np.array(
@@ -225,7 +231,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         refractivity = Chem.Crippen.MolMR(molecule.rdkit_mol)
         return np.array(
@@ -244,7 +250,7 @@ class GhoseFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular representation.
 
         Returns:
-            (np.array): number of Ghose filter rule violations.
+            np.array: number of Ghose filter rule violations.
         """
         num_violations = (
             self._mass_violation(molecule)
@@ -302,6 +308,7 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -309,9 +316,9 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             None.
 
         Returns:
-            (List[str]): List of names of extracted features.
+            List[str]: List of names of extracted features.
         """
-        return ["num_leadlike_violations"]
+        return ["num_lead_likeness_violations"]
 
     def _mass_violation(self, molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of molecular mass requirement for lead-likeness filter.
@@ -320,7 +327,7 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         molar_mass = Descriptors.ExactMolWt(molecule.rdkit_mol)
         return np.array(
@@ -334,10 +341,10 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         log_p = Chem.Crippen.MolLogP(molecule.rdkit_mol)
-        return np.array([(log_p <= self.upper_logp)], dtype=int).reshape((1, -1))
+        return np.array([log_p <= self.upper_logp], dtype=int).reshape((1, -1))
 
     def _rotable_bond_violation(self, molecule: Molecule) -> np.array:
         """Return molecule status as regards violation of rotatable bond count requirement for lead-likeness filter.
@@ -346,12 +353,12 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular instance.
 
         Returns:
-            (np.array): integer representing violation status. 1 if rule is violated else 0.
+            np.array: integer representing violation status. 1 if rule is violated else 0.
         """
         num_rotable_bonds = rdMolDescriptors.CalcNumRotatableBonds(
             molecule.reveal_hydrogens(), strict=self.strict_rotability
         )
-        return np.array([(num_rotable_bonds <= self.upper_num_rotable_bonds)], dtype=int).reshape(
+        return np.array([num_rotable_bonds <= self.upper_num_rotable_bonds], dtype=int).reshape(
             (1, -1)
         )
 
@@ -363,7 +370,7 @@ class LeadLikenessFilterFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular representation.
 
         Returns:
-            (np.array): number of lead-likeness filter violations.
+            np.array: number of lead-likeness filter violations.
         """
         num_violations = (
             self._mass_violation(molecule)

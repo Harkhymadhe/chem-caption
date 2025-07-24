@@ -34,7 +34,7 @@ BASE_DIR = BASE_DIR if "tests" in BASE_DIR else os.path.join(BASE_DIR, "tests")
 
 # Sources of truth
 PROPERTY_BANK = pd.read_csv(
-    os.path.join(BASE_DIR, "data", "pubchem_response.csv")
+    os.path.join(BASE_DIR, "regression", "data", "pubchem_response.csv")
 ).drop_duplicates()
 
 
@@ -54,7 +54,7 @@ def extract_molecule_properties(
         property (Union[List[str], str]): Properties of interest. Must be a feature(s) in `property_bank`.
 
     Returns:
-        properties (List[Tuple[str, np.array]]): List of (molecular_string, property value) tuples.
+        List[Tuple[str, np.array]]: List of `(molecular_string, property value)` tuples.
     """
     representation_name = representation_name.lower()
     property = [property] if not isinstance(property, list) else property
@@ -69,6 +69,26 @@ def extract_molecule_properties(
     properties = [(k, v) for k, v in zip(string_list, property_list)]
 
     return properties
+
+
+def get_molecules(property_bank: pd.DataFrame, representation_name: str = "smiles") -> List[str]:
+    """Return all the molecules of specified representation from the test bank.
+
+    Args:
+        property_bank (pd.DataFrame): Dataframe containing molecular properties.
+        representation_name (str): Name of molecular representation system.
+
+    Returns:
+        List[str]: List of `molecular_string`.
+    """
+
+    representation_name = representation_name.lower()
+
+    property_bank = property_bank.dropna(axis=0, how="any", subset=[representation_name])
+
+    molecular_string = property_bank[representation_name].values.tolist()
+
+    return molecular_string
 
 
 def batch_molecule_properties(
@@ -86,7 +106,7 @@ def batch_molecule_properties(
         batch_size (int): Number of times to batch extracted properties. Defaults to `2`.
 
     Returns:
-        properties (List[List[Tuple[str, np.array]]]): List containing multiple (molecular_string, property value) tuples.
+        List[List[Tuple[str, np.array]]]: List containing multiple `(molecular_string, property value)` tuples.
     """
     results = extract_molecule_properties(
         property_bank=property_bank,
@@ -114,7 +134,7 @@ def extract_representation_strings(
         out_ (str): Output representation type.
 
     Returns:
-        input_output (List[Tuple[str, str]): List of (in_, out_) tuples.
+        List[Tuple[str, str]: List of `(in_, out_)` tuples.
     """
     in_, out_ = in_.lower(), out_.lower()
 
@@ -162,7 +182,7 @@ def extract_info(
         property (Union[List[str], str]): Properties of interest. Must be a feature(s) in `property_bank`.
 
     Returns:
-        properties (List[dict]): List of (molecular_string, property value) tuples.
+        List[dict]: List of `(molecular_string, property value)` tuples.
     """
     results = extract_molecule_properties(
         property_bank=property_bank, representation_name=representation_name, property=property
@@ -199,7 +219,7 @@ def fill_template(template: str, bank: List[dict]) -> List[str]:
         bank (List[dict]): List of dictionaries containing molecular information.
 
     Returns:
-        results (List[str]): List of formatted templates for each dictionary of molecular information.
+        List[str]: List of formatted templates for each dictionary of molecular information.
     """
     results = [template.format(**inspect_info(info)) for info in bank]
     return results
@@ -221,7 +241,7 @@ def generate_prompt_test_data(
         key (str): Cardinality of molecular features.
 
     Returns:
-        results (List[Tuple[dict, str, str]]): List of (molecular_string, property value) tuples.
+        List[Tuple[dict, str, str]]: List of (molecular_string, property value) tuples.
     """
     bank = extract_info(property_bank, representation_name, property)
     templates = (
@@ -233,3 +253,8 @@ def generate_prompt_test_data(
     results = [(mol, t, t.format(**inspect_info(mol))) for mol in bank for t in templates]
 
     return results
+
+
+if __name__ == "__main__":
+    print(os.path.join(BASE_DIR, "regression", "data", "pubchem_response.csv"))
+    print(PROPERTY_BANK.columns[-1])

@@ -3,7 +3,7 @@
 """Utilities for facilitating text featurization."""
 
 from random import shuffle
-from typing import Dict, List, Union
+from typing import Any, Dict
 
 import numpy as np
 
@@ -140,11 +140,11 @@ def generate_template(template_type: str = "qa", key: str = "single") -> str:
     """Randomly select prompt template.
 
     Args:
-        template_type (str): Type of template. Take either `qa` or `text`. Defaults to `qa`.
-        key (str): Cardinality of template. Can be `single` or `multiple`. Defaults to `single`.
+        template_type (str, optional): Type of template. Take either `qa` or `text`. Defaults to `qa`.
+        key (str, optional): Cardinality of template. Can be `single` or `multiple`. Defaults to `single`.
 
     Returns:
-        template (str): Selected template.
+        str: Selected template.
     """
     templates = QA_TEMPLATES[key] if template_type == "qa" else TEXT_TEMPLATES[key]
 
@@ -152,14 +152,14 @@ def generate_template(template_type: str = "qa", key: str = "single") -> str:
     return template
 
 
-def inspect_info(info: dict) -> Dict[str, Union[str, List[int], List[float]]]:
+def inspect_info(info: dict) -> Dict:
     """Inspect information dictionary and update contents if necessary.
 
     Args:
         info (dict): Dictionary of molecular information.
 
     Returns:
-        new_info (Dict[str, Union[str, List[int], List[float]]]): Updated dictionary of molecular information.
+        Dict[str, Union[str, List[int], List[float]]]: Updated dictionary of molecular information.
 
     """
     new_info = info.copy()
@@ -171,9 +171,11 @@ def inspect_info(info: dict) -> Dict[str, Union[str, List[int], List[float]]]:
         elif isinstance(value, (list, tuple)):
             list_len = len(value)
             value = [
-                str(round(sub_value, new_info["PRECISION"]))
-                if isinstance(sub_value, (int, float))
-                else str(sub_value)
+                (
+                    str(round(sub_value, new_info["PRECISION"]))
+                    if isinstance(sub_value, (int, float))
+                    else str(sub_value)
+                )
                 for sub_value in value
             ]
 
@@ -208,7 +210,7 @@ def inspect_template(template: str, template_cardinality: str = "single") -> str
         template_cardinality (str): Type of template. May be `multiple` or `single`. Defaults to `single`.
 
     Returns:
-        template (str): Updated template.
+        str: Updated template.
     """
     prob = np.random.randn()
 
@@ -237,12 +239,12 @@ def inspect_template(template: str, template_cardinality: str = "single") -> str
             if term in template:
                 prob = np.random.randn()
                 if prob > 0.5:
-                    template = template.split(term, maxsplit=1)
+                    tmp = template.split(term, maxsplit=1)
                     template = (
-                        template[0]
+                        tmp[0]
                         + term
                         + " (rounded to within {PRECISION} {PRECISION_TYPE})"
-                        + template[-1]
+                        + tmp[-1]
                     )
                     break
                 else:
@@ -253,14 +255,14 @@ def inspect_template(template: str, template_cardinality: str = "single") -> str
     return template
 
 
-def generate_info(info_cardinality: str = "single") -> Dict[str, Union[str, float, int]]:
+def generate_info(info_cardinality: str = "single") -> Dict[str, Any]:
     """Generate dictionary of molecular information at random.
 
     Args:
         info_cardinality (str): Cardinality of template. Can be `single` or `multiple`. Defaults to `single`.
 
     Returns:
-        info (Dict[str, Union[str, float, int]]): Dictionary of molecular information.
+        Dict[str, Union[str, float, int]]: Dictionary of molecular information.
 
     """
     if info_cardinality == "single":

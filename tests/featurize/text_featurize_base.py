@@ -1,22 +1,31 @@
+# -*- coding: utf-8 -*-
+
+"""Unit tests for chemcaption.featurize.base submodule."""
+
 from chemcaption.featurize.base import MultipleFeaturizer
 from chemcaption.featurize.electronicity import HydrogenAcceptorCountFeaturizer
-from chemcaption.featurize.stereochemistry import NumChiralCentersFeaturizer
+from chemcaption.featurize.stereochemistry import ChiralCenterCountFeaturizer
 from chemcaption.molecules import SMILESMolecule
+
+__all__ = [
+    "test_multiple_featurizer",
+]
 
 
 def test_multiple_featurizer():
+    """Tests the MultipleFeaturizer."""
     smiles = SMILESMolecule("CCCC")
 
     featurizer = MultipleFeaturizer(
         featurizers=[
             HydrogenAcceptorCountFeaturizer(),
-            NumChiralCentersFeaturizer(),
+            ChiralCenterCountFeaturizer(),
         ]
     )
 
     results = featurizer.featurize(smiles)
     assert len(results[0]) == 2
-    assert len(results[0]) == len(featurizer.feature_labels())
+    assert len(results[0]) == len(featurizer.feature_labels)
 
-    text = featurizer.text_featurize(smiles)
-    assert len(text)
+    text = featurizer.text_featurize(pos_key="noun", molecule=smiles)
+    assert len(text) == len(featurizer.featurizers)

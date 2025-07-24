@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+"""Unit tests for chemcaption.featurize.electronicity submodule."""
+
 import numpy as np
 
 from chemcaption.featurize.electronicity import (
@@ -6,6 +10,12 @@ from chemcaption.featurize.electronicity import (
     ValenceElectronCountFeaturizer,
 )
 from chemcaption.molecules import SMILESMolecule
+
+__all__ = [
+    "test_hydrogen_acceptor_count_featurizer",
+    "test_hydrogen_donor_count_featurizer",
+    "test_valence_electron_count_featurizer",
+]
 
 
 def test_hydrogen_acceptor_count_featurizer():
@@ -16,12 +26,12 @@ def test_hydrogen_acceptor_count_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.equal(results, 4).all()
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
-    text = featurizer.text_featurize(molecule)
-    assert (
-        text.to_dict()["filled_prompt"]
-        == "Question: What is the number of hydrogen bond acceptors of the molecule with SMILES O=C1C=CC(=O)C(C(=O)O)=C1?"
+    text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
+    assert text.to_dict()["filled_prompt"] == (
+        "Question: What is the number of hydrogen bond acceptors of the "
+        "molecule with SMILES O=C1C=CC(=O)C(C(=O)O)=C1?"
     )
     assert text.to_dict()["filled_completion"] == "Answer: 4"
 
@@ -34,9 +44,9 @@ def test_hydrogen_donor_count_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.equal(results, 1).all()
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
-    text = featurizer.text_featurize(molecule)
+    text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
         text.to_dict()["filled_prompt"]
         == "Question: What is the number of hydrogen bond donors of the molecule with SMILES O=C1C=CC(=O)C(C(=O)O)=C1?"
@@ -52,9 +62,9 @@ def test_valence_electron_count_featurizer():
     results = featurizer.featurize(molecule)
 
     assert np.equal(results, 56).all()
-    assert len(featurizer.feature_labels()) == 1
+    assert len(featurizer.feature_labels) == 1
 
-    text = featurizer.text_featurize(molecule)
+    text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert (
         text.to_dict()["filled_prompt"]
         == "Question: What is the number of valence electrons of the molecule with SMILES O=C1C=CC(=O)C(C(=O)O)=C1?"

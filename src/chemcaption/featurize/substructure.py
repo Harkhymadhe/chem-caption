@@ -13,13 +13,13 @@ from chemcaption.featurize.utils import join_list_elements
 from chemcaption.molecules import Molecule
 from chemcaption.presets import SMARTS_MAP
 
-__all__ = ["SMARTSFeaturizer", "IsomorphismFeaturizer", "TopologyCountFeaturizer"]
+__all__ = ["FragmentSearchFeaturizer", "IsomorphismFeaturizer", "TopologyCountFeaturizer"]
 
 
-"""Featurizer to obtain the presence or count of SMARTS in molecules."""
+"""Featurizer to obtain the presence/count of fragments of interest (specified via SMARTS) in molecules."""
 
 
-class SMARTSFeaturizer(AbstractFeaturizer):
+class FragmentSearchFeaturizer(AbstractFeaturizer):
     """A featurizer for molecular substructure search via SMARTS."""
 
     def __init__(
@@ -27,25 +27,28 @@ class SMARTSFeaturizer(AbstractFeaturizer):
         smarts: List[str],
         names: Optional[List[str]],
         count: bool = True,
+        preset_name: str = "custom",
     ):
         """
         Initialize class.
 
         Args:
             smarts (Optional[List[str]]): SMARTS strings that are matched with the molecules.
-                Defaults to None.
+                Defaults to `None`.
             names (Optional[List[str]]): Names of the SMARTS strings.
-                If None, the SMARTS strings are used as names.
-                Defaults to None.
-            count (bool): If set to True, count pattern frequency.
+                If `None`, the SMARTS strings are used as names.
+                Defaults to `None`.
+            count (bool): If set to `True`, count pattern frequency.
                 Otherwise, only encode presence.
-                Defaults to True.
+                Defaults to `True`.
+            preset_name (str): Name to give preset of interest. Defaults to `custom`.
         """
         super().__init__()
 
         self.smart_names = names if names is not None else smarts
         self.smarts = smarts
         self.count = count
+        self.preset_name = preset_name
         self.constraint = (
             "Constraint: return a list of integers."
             if self.count
@@ -54,6 +57,7 @@ class SMARTSFeaturizer(AbstractFeaturizer):
 
         self.prompt_template = "{PROPERTY_NAME} in the molecule with {REPR_SYSTEM} {REPR_STRING}?"
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
         """Return names of extracted features.
 
@@ -61,57 +65,69 @@ class SMARTSFeaturizer(AbstractFeaturizer):
             None.
 
         Returns:
-            (List[Dict[str, str]]): List of dictionaries containing feature names.
+            List[Dict[str, str]]: List of dictionaries containing feature names.
         """
+        if len(self.smart_names) == 1:
+            name = "Is"
+            noun = "count"
+        else:
+            name = "Are"
+            noun = "counts"
+
         if self.count:
-            name = "Question: What is the count of " + join_list_elements(self.smart_names)
+            name = f"Question: What {name.lower()} the {noun} of " + join_list_elements(
+                self.smart_names
+            )
 
         else:
-            if len(self.smart_names) == 1:
-                name = "Question: Is " + join_list_elements(self.smart_names)
-            else:
-                name = "Question: Are " + join_list_elements(self.smart_names)
+            name = f"Question: {name} " + join_list_elements(self.smart_names)
 
         return [{"noun": name}]
 
     @classmethod
     def from_preset(cls, preset: str, count: bool = True):
-        """
+        """Generate class instance with atomic numbers of interest based on predefined presets.
+
         Args:
-            preset (str): Preset name of the substructures
-                encoded by the SMARTS strings.
+            preset (str): Preset name of the substructures encoded by the SMARTS strings.
                 Predefined presets can be specified as strings, and can be one of:
-                    - `heterocyclic`,
-                    - `rings`,
-                    - `amino`,
-                    - `scaffolds`,
-                    - `warheads` or
-                    - `organic`.
-                    - `all`
+                * `heterocyclic`,
+                * `rings`,
+                * `amino`,
+                * `scaffolds`,
+                * `warheads` or
+                * `organic`.
+                * `all`
+
             count (bool): If set to True, count pattern frequency.
         """
+
         if preset not in SMARTS_MAP:
             raise ValueError(
                 f"Invalid preset name '{preset}'. "
                 f"Valid preset names are: {', '.join(SMARTS_MAP.keys())}."
             )
+
         smarts_set = SMARTS_MAP[preset]
-        return cls(smarts=smarts_set["smarts"], names=smarts_set["names"], count=count)
+        return cls(
+            smarts=smarts_set["smarts"], names=smarts_set["names"], count=count, preset_name=preset
+        )
 
     def featurize(self, molecule: Molecule) -> np.array:
         """
         Featurize single molecule instance.
 
         Return integer array representing the:
-            - frequency or
-            - presence
+            * frequency or
+            * presence
+
             of molecular patterns in a molecule.
 
         Args:
             molecule (Molecule): Molecule representation.
 
         Returns:
-            (np.array): Array containing integer counts/signifier of pattern presence.
+            np.array: Array containing integer counts/signifier of pattern presence.
         """
         if self.count:
             results = [
@@ -126,6 +142,7 @@ class SMARTSFeaturizer(AbstractFeaturizer):
 
         return np.array(results).reshape((1, -1))
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -133,10 +150,27 @@ class SMARTSFeaturizer(AbstractFeaturizer):
             None.
 
         Returns:
-            (List[str]): List of labels of extracted features.
+            List[str]: List of labels for extracted features.
         """
         suffix = "_count" if self.count else "_presence"
-        return [name + suffix for name in self.smart_names]
+        return [self.preset_name + "_" + name + suffix for name in self._clean_feature_labels()]
+
+    def _clean_feature_labels(
+        self,
+    ) -> List[str]:
+        """Clean the feature labels.
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of cleaned feature labels.
+        """
+        feature_names = [
+            "".join([("_" if c in "[]()-" else c) for c in name]).lower()
+            for name in self.smart_names
+        ]
+        return feature_names
 
     def implementors(self) -> List[str]:
         """
@@ -159,7 +193,7 @@ class IsomorphismFeaturizer(AbstractFeaturizer):
         super().__init__()
 
         self.template = (
-            "According to the Weisfeiler-Lehman isomorphism test, what is the {PROPERTY_NAME} for "
+            "According to the Weisfeiler-Lehman isomorphism test, what {VERB} the {PROPERTY_NAME} for "
             "the molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
         )
         self._names = [
@@ -170,7 +204,17 @@ class IsomorphismFeaturizer(AbstractFeaturizer):
 
         self.label = ["weisfeiler_lehman_hash"]
 
+    @property
     def feature_labels(self) -> List[str]:
+        """Return feature label(s).
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of labels for extracted features.
+        """
+
         return ["weisfeiler_lehman_hash"]
 
     def featurize(self, molecule: Molecule) -> np.array:
@@ -181,7 +225,7 @@ class IsomorphismFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecule representation.
 
         Returns:
-            (np.array): Array containing int representation of isoelectronic status between
+            np.array: Array containing int representation of isoelectronic status between
                 `self.reference_molecule` and `molecule`.
         """
         molecule_graph = molecule.to_graph()
@@ -208,30 +252,58 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
         """Initialize class object.
 
         Args:
-            reference_atomic_numbers (List[int]): Atomic numbers for elements of interest.
+            reference_atomic_numbers (List[int]): Atomic number(s) for element(s) of interest.
         """
         super().__init__()
         self.reference_atomic_numbers = reference_atomic_numbers
 
+    @property
     def feature_labels(self) -> List[str]:
+        """Return feature label(s).
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of labels for extracted features.
+        """
         return [
             "topology_count_" + str(atomic_number)
             for atomic_number in self.reference_atomic_numbers
         ]
 
+    @property
     def get_names(self) -> List[Dict[str, str]]:
+        """Return feature names.
+
+        Args:
+            None.
+
+        Returns:
+            List[Dict[str, str]]: List of names for extracted features according to parts-of-speech.
+        """
         # map the numbers to names
         periodic_table = GetPeriodicTable()
         names = [
             PeriodicTable.GetElementSymbol(periodic_table, atomic_number)
             for atomic_number in self.reference_atomic_numbers
         ]
+
+        noun = "numbers" if len(self.reference_atomic_numbers) > 1 else "number"
         return [
-            {"noun": f"number of topologically unique environments of {join_list_elements(names)}"}
+            {"noun": f"{noun} of topologically unique environments of {join_list_elements(names)}"}
         ]
 
     @classmethod
     def from_preset(cls, preset: str):
+        """Generate class instance with atomic numbers of interest based on predefined presets.
+
+        Args:
+            preset (str): Preset of interest.
+
+        Returns:
+            self: Instance of self.
+        """
         if preset == "organic":
             # Use C, H, N, O, P, S, F, Cl, Br, I
             return cls(reference_atomic_numbers=[6, 1, 7, 8, 15, 16, 9, 17, 35, 53])
@@ -248,7 +320,7 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecule representation.
 
         Returns:
-            (np.array): Array containing number of unique `element` environments.
+            np.array: Array containing number of unique `element` environments.
         """
         return np.array(
             [
@@ -259,9 +331,8 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
             ]
         ).reshape((1, -1))
 
-    def _get_number_of_topologically_distinct_atoms(
-        self, molecule: Molecule, atomic_number: int = 12
-    ):
+    @staticmethod
+    def _get_number_of_topologically_distinct_atoms(molecule: Molecule, atomic_number: int = 12):
         """Return the number of unique `element` environments based on environmental topology.
 
         Args:
@@ -269,9 +340,9 @@ class TopologyCountFeaturizer(AbstractFeaturizer):
             atomic_number (int): Atomic number for `element` of interest.
 
         Returns:
-            (int): Number of unique environments.
+            int: Number of unique environments.
         """
-        mol = rdkit.Chem.AddHs(molecule.rdkit_mol) if atomic_number == 1 else molecule.rdkit_mol
+        mol = molecule.reveal_hydrogens() if atomic_number == 1 else molecule.rdkit_mol
 
         # Get unique canonical atom rankings
         atom_ranks = list(rdkit.Chem.rdmolfiles.CanonicalRankAtoms(mol, breakTies=False))

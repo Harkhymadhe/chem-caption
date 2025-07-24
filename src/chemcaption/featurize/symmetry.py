@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Featurizers for symmetry."""
+"""Featurizers for molecular symmetry."""
 
 from typing import List
 
@@ -26,7 +26,7 @@ class RotationalSymmetryNumberFeaturizer(AbstractFeaturizer):
         super().__init__()
 
         self.template = (
-            "What is the {PROPERTY_NAME} for a molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
+            "What {VERB} the {PROPERTY_NAME} for a molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
         )
         self._names = [
             {
@@ -34,7 +34,16 @@ class RotationalSymmetryNumberFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
+        """Return feature label(s).
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of labels of extracted features.
+        """
         return ["rotational_symmetry_number"]
 
     def featurize(self, molecule: Molecule) -> np.array:
@@ -47,7 +56,7 @@ class RotationalSymmetryNumberFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular representation.
 
         Returns:
-            (np.array): Rotational symmetry number.
+            np.array: Rotational symmetry number.
         """
         mol = molecule.rdkit_mol
         m = _rdkit_to_pymatgen(mol)
@@ -75,7 +84,7 @@ class PointGroupFeaturizer(AbstractFeaturizer):
         super().__init__()
 
         self.template = (
-            "What is the {PROPERTY_NAME} of a molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
+            "What {VERB} the {PROPERTY_NAME} of a molecule with {REPR_SYSTEM} `{REPR_STRING}`?"
         )
         self._names = [
             {
@@ -83,7 +92,16 @@ class PointGroupFeaturizer(AbstractFeaturizer):
             }
         ]
 
+    @property
     def feature_labels(self) -> List[str]:
+        """Return feature label(s).
+
+        Args:
+            None.
+
+        Returns:
+            List[str]: List of labels of extracted features.
+        """
         return ["point_group"]
 
     # ToDo: consider if we want to continue
@@ -101,7 +119,7 @@ class PointGroupFeaturizer(AbstractFeaturizer):
             molecule (Molecule): Molecular representation.
 
         Returns:
-            (np.array): Schoenflies symbol of point group.
+            np.array: Schoenflies symbol of point group.
         """
         mol = molecule.rdkit_mol
         m = _rdkit_to_pymatgen(mol)

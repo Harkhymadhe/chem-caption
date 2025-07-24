@@ -24,12 +24,6 @@ __all__ = [
     "PERIODIC_TABLE",
 ]
 
-
-# Define molecule type alias
-Molecule: TypeAlias = Union["SMILESMolecule", "InChIMolecule", "SELFIESMolecule"]
-
-"""Molecular type alias."""
-
 PERIODIC_TABLE = rdkit.Chem.GetPeriodicTable()  # Periodic table
 
 """Graph representation"""
@@ -58,7 +52,7 @@ class MoleculeGraph(nx.Graph):
             None.
 
         Returns:
-            (nx.Graph): Molecular graph.
+            nx.Graph: Molecular graph.
         """
         graph = nx.Graph()
 
@@ -90,16 +84,16 @@ class MoleculeGraph(nx.Graph):
 
         return graph
 
-    def weisfeiler_lehman_graph_hash(self) -> str:
+    def weisfeiler_lehman_graph_hash(self) -> Union[str, None]:
         """Return graph hash according to Weisfeiler-Lehman isomorphism test.
 
         Args:
             None.
 
         Returns:
-            (str): Weisfeiler-Lehman graph hash.
+            str: Weisfeiler-Lehman graph hash.
         """
-        if not self._hash:
+        if self._hash is None:
             self._hash = nx.weisfeiler_lehman_graph_hash(self.graph)
         return self._hash
 
@@ -128,10 +122,9 @@ class AbstractMolecule(ABC):
         return self._rdkit_mol
 
     @rdkit_mol.setter
-    def rdkit_mol(self, **kwargs: dict) -> None:
+    def rdkit_mol(self, mol: Chem.Mol) -> None:
         """Set molecular representation via rdkit."""
-        self._rdkit_mol = self.get_rdkit_mol()
-        return
+        self._rdkit_mol = mol
 
     def __repr__(self) -> str:
         """Return string representation of molecule object.
@@ -140,7 +133,7 @@ class AbstractMolecule(ABC):
             None.
 
         Returns:
-            (str): String representation of molecule.
+            str: String representation of molecule.
         """
         return f"{self.__class__.__name__}(REPRESENTATION = '{self.representation_string}')"
 
@@ -151,7 +144,7 @@ class AbstractMolecule(ABC):
             None.
 
         Returns:
-            (str): Name of representation system.
+            str: Name of representation system.
         """
         return self.__repr__().split("Molecule")[0]
 
@@ -176,7 +169,7 @@ class AbstractMolecule(ABC):
             **kwargs (dict): Keyword arguments.
 
         Returns:
-            (Chem.Mol): RDKit molecular object with explicit hydrogens.
+            Chem.Mol: RDKit molecular object with explicit hydrogens.
         """
         return Chem.rdmolops.AddHs(self.rdkit_mol, **kwargs)
 
@@ -187,7 +180,7 @@ class AbstractMolecule(ABC):
             None.
 
         Returns:
-            (str): Molecular formular.
+            str: Molecular formular.
         """
         return Chem.rdMolDescriptors.CalcMolFormula(self.rdkit_mol)
 
@@ -198,7 +191,7 @@ class AbstractMolecule(ABC):
             None.
 
         Returns:
-            (MoleculeGraph): Molecular graph instance.
+            MoleculeGraph: Molecular graph instance.
         """
         graph = MoleculeGraph(molecule=self.reveal_hydrogens())
         return graph
@@ -259,3 +252,8 @@ DISPATCH_MAP = {
     "selfies": SELFIESMolecule,
     "inchi": InChIMolecule,
 }
+
+"""Molecular type alias."""
+
+# Define molecule type alias
+Molecule: TypeAlias = Union[SMILESMolecule, InChIMolecule, SELFIESMolecule]

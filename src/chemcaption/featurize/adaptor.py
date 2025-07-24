@@ -49,11 +49,13 @@ class RDKitAdaptor(AbstractFeaturizer):
 
         Extract and return features from molecular object.
 
+        The features are extracted based on the RDKit function provided.
+
         Args:
             molecule (Molecule): Molecule representation.
 
         Returns:
-            (np.array): Array containing extracted features.
+            np.array: Array containing extracted features.
         """
         feature = self.rdkit_function(molecule.rdkit_mol, **self.rdkit_function_kwargs)
         feature = (
@@ -65,6 +67,7 @@ class RDKitAdaptor(AbstractFeaturizer):
         )
         return np.array(feature).reshape((1, -1))
 
+    @property
     def feature_labels(self) -> List[str]:
         """Return feature label(s).
 
@@ -72,7 +75,7 @@ class RDKitAdaptor(AbstractFeaturizer):
             None.
 
         Returns:
-            (List[str]): List of labels of extracted features.
+            List[str]: List of labels of extracted features.
         """
         return self._label
 
@@ -96,7 +99,7 @@ class ValenceElectronCountAdaptor(RDKitAdaptor):
         """Initialize class.
 
         Args:
-            None
+            None.
         """
         super().__init__(
             rdkit_function=Descriptors.NumValenceElectrons,
@@ -123,7 +126,7 @@ class ValenceElectronCountAdaptor(RDKitAdaptor):
             molecule (Molecule): Molecule representation.
 
         Returns:
-            (np.array): Array containing number of valence electrons.
+            np.array: Array containing number of valence electrons.
         """
         return super().featurize(molecule=molecule)
 

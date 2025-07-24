@@ -3,9 +3,9 @@
 """Utilities for `featurize` module."""
 
 from functools import lru_cache
+from typing import Any, List, Tuple
 
 import numpy as np
-from givemeconformer.api import _get_conformer, get_conformer
 from pymatgen.core import IMolecule  # use immutable for caching
 from pymatgen.symmetry.analyzer import PointGroupAnalyzer
 from rdkit import Chem
@@ -19,19 +19,22 @@ __all__ = [
     "get_atom_symbols_and_positions",  # Helper function
     "cached_conformer",  # Helper function
     "apply_featurizer",  # Helper function
+    "cached_conformer",
 ]
 
 
-def join_list_elements(elements) -> str:
+def join_list_elements(elements: Any) -> str:
     """Join list elements into a string. First elements separated by comma, last element separated by `and`."""
     if len(elements) == 1:
-        return elements[0]
+        return str(elements[0])
 
-    return ", ".join(elements[:-1]) + ", and " + elements[-1]
+    return ", ".join([str(e) for e in elements[:-1]]) + ", and " + str(elements[-1])
 
 
 @lru_cache(maxsize=128)
 def _rdkit_to_pymatgen(mol):
+    from givemeconformer.api import get_conformer
+
     c = get_conformer(Chem.MolToSmiles(mol))[0]
     m = IMolecule(*get_atom_symbols_and_positions(c))
     return m
@@ -43,7 +46,16 @@ def _pmg_mol_to_pointgroup_analyzer(mol):
     return analyzer
 
 
-def get_atom_symbols_and_positions(conf):
+def get_atom_symbols_and_positions(conf: Any) -> Tuple[List, List]:
+    """Returns a touple of atom symbols and positions.
+
+    Args:
+        conf (list): List of conformers (atoms).
+
+    Returns:
+        tuple(lsit, list): tuple of symbols and positions.
+    """
+
     mol = conf.GetOwningMol()
     symbols = [atom.GetSymbol() for atom in mol.GetAtoms()]
     positions = conf.GetPositions()
@@ -52,6 +64,10 @@ def get_atom_symbols_and_positions(conf):
 
 @lru_cache(maxsize=None)
 def cached_conformer(smiles, kwargs):
+    """Returns cached konformer."""
+
+    from givemeconformer.api import _get_conformer
+
     mol, conformers = _get_conformer(smiles=smiles, **kwargs)
     for conf in conformers.keys():
         mol.AddConformer(mol.GetConformer(conf))
@@ -67,7 +83,7 @@ def apply_featurizer(featurize_molecule_pair) -> np.array:
             (Molecule): Molecular instance.
 
     Returns:
-        (np.array): Featurizer outputs.
+        np.array: Featurizer outputs.
     """
     featurizer, molecule = featurize_molecule_pair[0], featurize_molecule_pair[1]
     return (

@@ -43,6 +43,7 @@ def test_isoelectronic_comparator():
     featurizer = IsoelectronicComparator()
 
     results = featurizer.compare(isoelectronic_molecules).item()
+    assert isinstance(featurizer.implementors(), list)
 
     assert results == 1
 
@@ -66,6 +67,7 @@ def test_isomerism_comparator():
     ]
 
     featurizer = IsomerismComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(isomeric_molecules).item()
 
@@ -91,6 +93,7 @@ def test_valence_electron_count_comparator():
     ]
 
     featurizer = ValenceElectronCountComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(valence_similar_electrons).item()
 
@@ -116,6 +119,7 @@ def test_isomorphism_comparator():
     ]
 
     featurizer = IsomorphismComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(similar_structure_electrons).item()
 
@@ -141,6 +145,7 @@ def test_lipinski_violation_count_comparator():
     ]
 
     featurizer = LipinskiFilterComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(lipinski_similar).item()
 
@@ -164,6 +169,7 @@ def test_ghose_filter_comparator():
     ]
 
     featurizer = GhoseFilterComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(ghose_similar).item()
 
@@ -187,6 +193,7 @@ def test_lead_likeness_filter_comparator():
     ]
 
     featurizer = LeadLikenessFilterComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(lead_like).item()
 
@@ -210,6 +217,7 @@ def test_atom_count_comparator():
     ]
 
     featurizer = AtomCountComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.compare(similar_atom_count).item()
 
@@ -233,6 +241,7 @@ def test_drug_likeness_comparator():
     ]
 
     featurizer = DrugLikenessComparator()
+    assert isinstance(featurizer.implementors(), list)
 
     results = np.unique(featurizer.compare(similar))
 

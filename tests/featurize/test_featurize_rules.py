@@ -21,9 +21,13 @@ def test_lipinski_filter_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = LipinskiFilterFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(molecule)
     assert results[0] == 0
+
+    hbd_violation = featurizer._hydrogen_bond_donor_violation(molecule)
+    assert hbd_violation == 0
 
     molecule = SMILESMolecule("CCCCCCCCCCCCCCCC")
 
@@ -43,6 +47,7 @@ def test_ghose_filter_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = GhoseFilterFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(molecule)
     assert results[0] == 0
@@ -64,6 +69,7 @@ def test_leadlikeness_filter_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = LeadLikenessFilterFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(molecule)
     assert results[0] == 2

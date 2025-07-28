@@ -6,6 +6,7 @@ import numpy as np
 
 from chemcaption.featurize.spatial import (
     AsphericityFeaturizer,
+    AtomVolumeFeaturizer,
     EccentricityFeaturizer,
     InertialShapeFactorFeaturizer,
     NPRFeaturizer,
@@ -26,9 +27,33 @@ __all__ = [
 ]
 
 
+def test_atom_volume_featurizer():
+    """Test the AtomVolumeFeaturizer."""
+
+    featurizer = AtomVolumeFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
+    molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
+
+    results = featurizer.featurize(molecule)
+
+    assert len(results) > 0
+    assert len(results[0]) == 30
+
+    assert len(featurizer.feature_labels) == len(results[0])
+
+    smiles_list = [SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O"), SMILESMolecule("O")]
+
+    results = featurizer.featurize_many(smiles_list)
+
+    assert len(results) == len(smiles_list)
+
+
 def test_pmi_featurizer():
     """Test PMIFeaturizer."""
     featurizer = PMIFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule)
@@ -46,10 +71,21 @@ def test_pmi_featurizer():
     # ToDo: make the test below less brittle
     assert text.to_dict()["filled_completion"] == "Answer: 272.4289, 546.3806, and 792.5727"
 
+    try:
+        featurizer = PMIFeaturizer(420)
+        assert False
+    except ValueError:
+        assert True
+
+    featurizer = PMIFeaturizer(1)
+    assert len(featurizer.feature_labels) == 1
+
 
 def test_asphericity_featurizer():
     """Test AsphericityFeaturizer."""
     featurizer = AsphericityFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule)
@@ -68,6 +104,8 @@ def test_asphericity_featurizer():
 def test_eccentricity_featurizer():
     """Test EccentricityFeaturizer."""
     featurizer = EccentricityFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule)
@@ -86,6 +124,8 @@ def test_eccentricity_featurizer():
 def test_inertial_shape_factor():
     """Test InertialShapeFactorFeaturizer."""
     featurizer = InertialShapeFactorFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule)
@@ -104,12 +144,16 @@ def test_inertial_shape_factor():
 def test_npr_featurizer():
     """Test NPRFeaturizer."""
     featurizer = NPRFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule)
 
     assert np.isclose(results[0][0], 0.34, atol=0.2)
     assert len(featurizer.feature_labels) == 2
+
+    assert len(featurizer.get_names) > 0
 
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
     assert text.to_dict()["filled_prompt"] == (
@@ -118,10 +162,18 @@ def test_npr_featurizer():
     )
     assert text.to_dict()["filled_completion"][:-3] == "Answer: 0.3437 and 0.6"
 
+    try:
+        featurizer = NPRFeaturizer(variant=128)
+        assert False
+    except ValueError:
+        assert True
+
 
 def test_radius_of_gyration_featurizer():
     """Test RadiusOfGyrationFeaturizer."""
     featurizer = RadiusOfGyrationFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule).item()
@@ -140,6 +192,8 @@ def test_radius_of_gyration_featurizer():
 def test_spherocity_index_featurizer():
     """Test SpherocityIndexFeaturizer."""
     featurizer = SpherocityIndexFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule("O=C1C=CC(=O)C=C1C(=O)O")
 
     results = featurizer.featurize(molecule).item()

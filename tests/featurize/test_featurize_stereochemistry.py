@@ -21,6 +21,8 @@ def test_chiral_center_count_featurizer():
     mol = SMILESMolecule(representation_string="CC")
 
     featurizer = ChiralCenterCountFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     results = featurizer.featurize(mol)
     assert results == np.array([0.0])
 

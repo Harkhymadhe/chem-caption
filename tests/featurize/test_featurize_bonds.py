@@ -27,6 +27,8 @@ def test_bond_type_count_featurizer():
     """Tests the BondTypeCountFeaturizer"""
 
     bt = BondTypeCountFeaturizer()
+    assert isinstance(bt.implementors(), list)
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     results = bt.featurize(molecule)
     assert len(results.flatten().tolist()) == len(bt.feature_labels)
@@ -69,6 +71,8 @@ def test_rotable_bond_proportion_featurizer():
     """Tests the RotableBondProportionFeaturizer"""
 
     brf = RotableBondProportionFeaturizer()
+    assert isinstance(brf.implementors(), list)
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     results = brf.featurize(molecule)
     assert len(results) == 1
@@ -89,6 +93,8 @@ def test_rotable_bond_count_featurizer():
     """Tests the RotableBondCountFeaturizer"""
 
     rbcf = RotableBondCountFeaturizer()
+    assert isinstance(rbcf.implementors(), list)
+
     molecule = SMILESMolecule("C1=CC=CC=C1")
     results = rbcf.featurize(molecule)
     assert len(results) == 1
@@ -109,6 +115,7 @@ def test_bond_type_proportion_featurizer():
     """Tests the BondTypeProportionFeaturizer"""
 
     featurizer = BondTypeProportionFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     molecule = SMILESMolecule("C1=CC=CC=C1")
 

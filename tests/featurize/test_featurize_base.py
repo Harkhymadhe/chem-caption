@@ -21,6 +21,7 @@ def test_multiple_featurizer():
             ChiralCenterCountFeaturizer(),
         ]
     )
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(smiles)
     assert len(results[0]) == 2
@@ -31,7 +32,7 @@ def test_multiple_featurizer():
 
     smiles_list = [SMILESMolecule("CCCC"), SMILESMolecule("O")]
 
-    results = featurizer.text_featurize_many(molecules=smiles_list)
+    results = featurizer.featurize_many(molecules=smiles_list)
 
     assert len(results) == len(smiles_list)
 
@@ -52,6 +53,7 @@ def test_multiple_comparator():
             IsomerismComparator(),
         ]
     )
+    assert isinstance(comparator.implementors(), list)
 
     results = comparator.compare(molecules)
 
@@ -90,6 +92,7 @@ def test_comparator():
             ChiralCenterCountFeaturizer(),
         ]
     )
+    assert isinstance(comparator.implementors(), list)
 
     results = comparator.compare(molecules)
 

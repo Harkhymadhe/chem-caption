@@ -9,6 +9,8 @@ from chemcaption.featurize.bonds import (
     BondTypeProportionFeaturizer,
     RotableBondCountFeaturizer,
     RotableBondProportionFeaturizer,
+    DipoleMomentsFeaturizer,
+    BondOrderFeaturizer
 )
 from chemcaption.featurize.text import Prompt
 from chemcaption.molecules import SMILESMolecule
@@ -20,8 +22,9 @@ __all__ = [
     "test_rotable_bond_proportion_featurizer",
     "test_rotable_bond_count_featurizer",
     "test_bond_type_proportion_featurizer",
+    "test_dipole_moments_featurizer",
+    "test_bond_order_featurizer"
 ]
-
 
 def test_bond_type_count_featurizer():
     """Tests the BondTypeCountFeaturizer"""
@@ -65,6 +68,18 @@ def test_bond_type_count_featurizer():
         "bond types in the molecule with SMILES c1ccccc1?\nConstraint: Return a list of comma separated "
         "integer / boolean indicators i.e., 0 (or False) for absence, 1 (or True) for presence."
     )
+
+    bt = BondTypeCountFeaturizer(bond_type=['single', 'double', 'triple'])
+    
+    results = bt.featurize(molecule)
+
+    assert len(results[0]) == len(bt.feature_labels)
+    assert np.equal(results[0], [1, 0, 0]).all()
+
+    uq = bt._get_unique_bond_types(molecule)
+
+    assert len(uq) == 2
+    assert set(uq) == set(['AROMATIC', 'SINGLE'])
 
 
 def test_rotable_bond_proportion_featurizer():
@@ -110,6 +125,31 @@ def test_rotable_bond_count_featurizer():
 
     assert text.to_dict()["filled_completion"] == "Answer: 0"
 
+    result = rbcf.labeled_featurize(molecule=molecule)
+
+    assert isinstance(result, dict)
+    assert len(result.keys()) == len(rbcf.feature_labels)
+
+    rbcf = RotableBondCountFeaturizer()
+    text = rbcf.text_featurize(pos_key=None, molecule=molecule)
+
+    assert isinstance(text, Prompt)
+
+    assert (
+        text.to_dict()["filled_prompt"]
+        == "Question: What is the number of rotatable bonds of the molecule with SMILES c1ccccc1?"
+    )
+
+    assert text.to_dict()["filled_completion"] == "Answer: 0"
+
+    mols = [SMILESMolecule("C1=CC=CC=C1"), SMILESMolecule("O")]
+
+    try:
+        rbcf.text_featurize_many(pos_keys=['hehe'], molecules=mols)
+        assert False
+    except:
+        assert True
+
 
 def test_bond_type_proportion_featurizer():
     """Tests the BondTypeProportionFeaturizer"""
@@ -141,3 +181,33 @@ def test_bond_type_proportion_featurizer():
         "Answer: 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, "
         "0.0, 0.0, 0.0, 0.0, 0.0, 0.0, and 0.0"
     )
+
+def test_dipole_moments_featurizer():
+    """Tests the DipoleMomentsFeaturizer"""
+
+    featurizer = DipoleMomentsFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
+    molecule = SMILESMolecule("C1=CC=CC=C1")
+
+    results = featurizer.featurize(molecule)
+
+    assert len(results[0]) == len(featurizer.feature_labels)
+
+
+def test_bond_order_featurizer():
+    """Tests the BondOrderFeaturizer"""
+
+    featurizer = BondOrderFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
+    molecule = SMILESMolecule("C1=CC=CC=C1")
+
+    results = featurizer.featurize(molecule)
+
+    assert len(results[0]) == len(featurizer.feature_labels)
+    
+    names = featurizer.feature_names()
+
+    assert isinstance(names, list)
+    assert names[0]['noun'] == 'bond orders'

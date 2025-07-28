@@ -635,7 +635,7 @@ class AbstractComparator(ABC):
 
     def citations(self):
         """Return citation for this project."""
-        return None
+        return NotImplementedError
 
 
 """Higher-level featurizers."""

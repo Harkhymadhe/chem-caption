@@ -86,10 +86,15 @@ def test(session):
     session.install("coverage")
     session.install("git+https://github.com/kjappelbaum/givemeconformer.git")
     session.conda_install("xtb-python", channel='conda-forge')
-    
+    session.conda_install("libblas=*=*mkl", channel='conda-forge')
+    session.conda_install("qcengine", channel='conda-forge')
+    session.conda_install("spyrmsd", channel='conda-forge')
+    session.install("geometric")
+    session.install("pyberny")
+
     session.install('.', '--no-deps')
 
-    session.run("coverage", "run", "-p", "-m", "pytest", "--durations=20", "--ignore=tests/regression/")
+    session.run("coverage", "run", "-p", "-m", "pytest", "-vvv", "--durations=20", "--ignore=tests/regression/")
 
 # coverage-report
 @nox.session

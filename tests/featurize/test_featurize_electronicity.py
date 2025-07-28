@@ -225,3 +225,4 @@ def test_electron_affinity_featurizer():
     results = featurizer.featurize(molecule)
 
     assert len(featurizer.feature_labels) == len(results[0])
+    

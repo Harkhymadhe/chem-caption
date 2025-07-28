@@ -94,7 +94,7 @@ def test(session):
 
     session.install('.', '--no-deps')
 
-    session.run("coverage", "run", "-p", "-m", "pytest", "-vvv", "--durations=20", "--ignore=tests/regression/")
+    session.run("coverage", "run", "-p", "-m", "pytest", "--durations=20", "--ignore=tests/regression/")
 
 # coverage-report
 @nox.session

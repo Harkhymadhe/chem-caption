@@ -33,5 +33,3 @@ def test_pre_export_test():
 
     assert isinstance(repetitive, dict)
     assert not repetitive
-
-test_pre_export_test()

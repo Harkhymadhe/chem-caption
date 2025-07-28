@@ -3,7 +3,7 @@
 """Utility imports."""
 
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import Union, List, Generator
 
 import networkx as nx
 import rdkit
@@ -257,3 +257,24 @@ DISPATCH_MAP = {
 
 # Define molecule type alias
 Molecule: TypeAlias = Union[SMILESMolecule, InChIMolecule, SELFIESMolecule]
+
+"""Molecule collection."""
+
+class MoleculeCollection():
+    """Holds a collection of molecules of the same type.
+
+    Args:
+        molecules (List[str]): list of molecules as string
+        representation (Molecule): molecule representation we want to use.
+    """
+
+    def __init__(self,
+                molecules:List[str],
+                representation: Molecule) -> None:
+        self.molecules = molecules
+        self.representation = representation
+
+
+    def __iter__(self):
+        for m in self.molecules:
+            yield self.representation(m)

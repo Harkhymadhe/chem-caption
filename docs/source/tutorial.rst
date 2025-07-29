@@ -249,13 +249,13 @@ like:
     'prompt_template': 'Question: What {VERB} the {PROPERTY_NAME} of the molecule with {REPR_SYSTEM} {REPR_STRING}?',
     'completion_template': 'Answer: {COMPLETION}',
     'completion': [6, 4, 0, 2],
-    'completion_names': 'atom counts of Carbon, Hydrogen, Hidrogen, and Bromine',
+    'completion_names': 'atom counts of Carbon, Hydrogen, Oxygen, and Bromine',
     'completion_labels': ['num_carbon_atoms',
     'num_hydrogen_atoms',
     'num_hidrogen_atoms',
     'num_bromine_atoms'],
     'constraint': None,
-    'filled_prompt': 'Question: What are the atom counts of Carbon, Hydrogen, Hidrogen, and Bromine of the molecule with SMILES Brc1ccccc1Br?',
+    'filled_prompt': 'Question: What are the atom counts of Carbon, Hydrogen, Oxygen, and Bromine of the molecule with SMILES Brc1ccccc1Br?',
     'filled_completion': 'Answer: 6, 4, 0, and 2'}
 
 If we are using the :obj:`chemcaption.featurize.base.MultipleFeaturizer`, we

@@ -3,7 +3,7 @@
 <h1 align="center">
   <!-- ![icon](docs/source/_static/logo.png) -->
   <img style="vertical-align:middle" src="docs/source/_static/logo.png" width=75> 
-  <span > ChemCpation </span>
+  <span > ChemCaption </span>
 </h1>
 
 <p align="center">

@@ -29,6 +29,20 @@ We provide an additional dispatcher to handle this easier:
 
     smiles_molecule = DISPATCH_MAP[kinds[0]]('CC(C)NCC(O)COc1cccc2ccccc12.[Cl]')
 
+When working with a set of molecules we provide additional :obj:`chemcaption.molecules.MoleculeCollection` 
+object which provides a way to easily handle large sets of molecules.
+
+.. code-block:: python
+
+    from chemcaption.molecules import MoleculeCollection, SMILESMolecule
+    
+        smiles = ["C1=CC=CC=C1", "O"]
+    
+        collection = MoleculeCollection(smiles, SMILESMolecule)
+    
+        for mol in collection:
+            ...
+
 For more detailed information, check the API page :ref:`Molecules`.
 
 Featurizing Molecules

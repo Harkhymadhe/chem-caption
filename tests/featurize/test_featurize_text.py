@@ -46,3 +46,5 @@ def test_prompt_container():
     elements = prompt_container.to_list()
     assert len(elements) == 2
     assert isinstance(elements[0], dict)
+
+    assert isinstance(prompt_1.implementors(), list)

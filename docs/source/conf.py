@@ -123,10 +123,10 @@ pygments_style = "sphinx"
 #
 html_theme = "furo"
 
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 html_css_files = [
-    'custom.css',
+    "custom.css",
 ]
 
 # Theme options are theme-specific and customize the look and feel of a theme

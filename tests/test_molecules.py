@@ -50,3 +50,17 @@ def test_inchi_mol():
     results = molecule.representation_string
 
     assert results == "InChI=1S/C6H6/c1-2-4-6-5-3-1/h1-6H"
+
+
+def test_molecule_collection():
+    """Tests the MoleculeCollection."""
+
+    from chemcaption.molecules import MoleculeCollection, SMILESMolecule
+
+    smiles = ["C1=CC=CC=C1", "O"]
+
+    collection = MoleculeCollection(smiles, SMILESMolecule)
+
+    for c in collection:
+        assert isinstance(c, SMILESMolecule)
+

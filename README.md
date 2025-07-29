@@ -1,32 +1,30 @@
-<!--
-<p align="center">
-  <img src="https://github.com/kjappelbaum/chem-caption/raw/main/docs/source/logo.png" height="150">
-</p>
--->
+<!-- [![Tests](https://github.com/lamalab-org/chem-caption/actions/workflows/tests.yml/badge.svg)](https://github.com/lamalab-org/chem-caption/actions/workflows/tests.yml) -->
 
 <h1 align="center">
-  chemcaption
+  <!-- ![icon](docs/source/_static/logo.png) -->
+  <img style="vertical-align:middle" src="docs/source/_static/logo.png" width=75> 
+  <span > ChemCpation </span>
 </h1>
 
 <p align="center">
-    <a href="https://github.com/kjappelbaum/chem-caption/actions/workflows/tests.yml">
-        <img alt="Tests" src="https://github.com/kjappelbaum/chem-caption/workflows/tests.yml/badge.svg" />
+    <a href="https://github.com/lamalab-org/chem-caption/actions/workflows/tests.yml">
+        <img alt="Tests" src="https://github.com/lamalab-org/chem-caption/actions/workflows/tests.yml/badge.svg" />
     </a>
-    <a href="https://pypi.org/project/chemcaption">
+    <!-- <a href="https://pypi.org/project/chemcaption">
         <img alt="PyPI" src="https://img.shields.io/pypi/v/chemcaption" />
-    </a>
-    <a href="https://pypi.org/project/chemcaption">
+    </a> -->
+    <!-- <a href="https://pypi.org/project/chemcaption">
         <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/chemcaption" />
-    </a>
-    <a href="https://github.com/kjappelbaum/chem-caption/blob/main/LICENSE">
+    </a> -->    
+    <a href="https://github.com/lamalab-org/chem-caption/blob/main/LICENSE">
         <img alt="PyPI - License" src="https://img.shields.io/pypi/l/chemcaption" />
     </a>
-    <a href='https://chemcaption.readthedocs.io/en/latest/?badge=latest'>
+    <!-- <a href='https://chemcaption.readthedocs.io/en/latest/?badge=latest'>
         <img src='https://readthedocs.org/projects/chemcaption/badge/?version=latest' alt='Documentation Status' />
-    </a>
-    <a href="https://codecov.io/gh/kjappelbaum/chem-caption/branch/main">
+    </a> -->
+    <!-- <a href="https://codecov.io/gh/kjappelbaum/chem-caption/branch/main">
         <img src="https://codecov.io/gh/kjappelbaum/chem-caption/branch/main/graph/badge.svg" alt="Codecov status" />
-    </a>  
+    </a>   -->
     <a href="https://github.com/cthoyt/cookiecutter-python-package">
         <img alt="Cookiecutter template from @cthoyt" src="https://img.shields.io/badge/Cookiecutter-snekpack-blue" /> 
     </a>
@@ -38,41 +36,53 @@
     </a>
 </p>
 
-Caption molecules and materials for pretraining for neural networks 
+Caption molecules and materials for pretraining for neural networks.
 
 ## 💪 Getting Started
 
-> TODO show in a very small amount of space the **MOST** useful thing your package can do.
-> Make it as short as possible! You have an entire set of docs for later.
+ChemCaption is a tool designed to generate prompts for molecular features to train neural networks. 
 
-### Command Line Interface
+Here is a quick example of one of the featurizers designed to count the number of elements in a molecule.
 
-The chemcaption command line tool is automatically installed. It can
-be used from the shell with the `--help` flag to show all subcommands:
+```python
+from chemcaption.presets import ORGANIC
+from chemcaption.molecules import SMILESMolecule
+from chemcaption.featurize.composition import ElementCountFeaturizer
 
-```shell
-$ chemcaption --help
+# Molecule we want to featurize
+molecule = SMILESMolecule("C1(Br)=CC=CC=C1Br")
+
+# We can eather specify the symbol or the full name
+el_count_name = ElementCountFeaturizer(['carbon', 'hydrogen', 'oxygen', 'bromine'])
+
+# Featurize the molecule
+prompt = el_count_symbol.text_featurize(molecule=molecule)
 ```
 
-> TODO show the most useful thing the CLI does! The CLI will have documentation auto-generated
-> by `sphinx`.
+The generate prompt has the following QA pair.
+
+```text
+Question: What are the atom counts of Carbon, Hydrogen, Hidrogen, and Bromine of the molecule with SMILES Brc1ccccc1Br?
+Answer: 6, 4, 0, and 2
+```
+
+For more details and all other available featurizers please visit the [documentation]().
 
 ## 🚀 Installation
 
-<!-- Uncomment this section after your first ``tox -e finish``
-The most recent release can be installed from
-[PyPI](https://pypi.org/project/chemcaption/) with:
+The most recent release can be installed from PyPI with:
 
-```shell
+```bash
 pip install chemcaption
 ```
--->
 
 The most recent code and data can be installed directly from GitHub with:
 
 ```bash
 pip install git+https://github.com/kjappelbaum/chem-caption.git
 ```
+
+Some of the ChemCaption featurizers are dependent on [morfeus](https://digital-chemistry-laboratory.github.io/morfeus/index.html) and might require additional dependencies to be installed. You can see all the optional dependencies for morfeus-ml [here](https://digital-chemistry-laboratory.github.io/morfeus/installation.html)
 
 ## 👐 Contributing
 
@@ -84,31 +94,6 @@ Contributions, whether filing an issue, making a pull request, or forking, are a
 ### ⚖️ License
 
 The code in this package is licensed under the MIT License.
-
-<!--
-### 📖 Citation
-
-Citation goes here!
--->
-
-<!--
-### 🎁 Support
-
-This project has been supported by the following organizations (in alphabetical order):
-
-- [Harvard Program in Therapeutic Science - Laboratory of Systems Pharmacology](https://hits.harvard.edu/the-program/laboratory-of-systems-pharmacology/)
-
--->
-
-<!--
-### 💰 Funding
-
-This project has been supported by the following grants:
-
-| Funding Body                                             | Program                                                                                                                       | Grant           |
-|----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| DARPA                                                    | [Automating Scientific Knowledge Extraction (ASKE)](https://www.darpa.mil/program/automating-scientific-knowledge-extraction) | HR00111990009   |
--->
 
 ### 🍪 Cookiecutter
 
@@ -135,11 +120,11 @@ $ pip install -e .
 
 ### 🥼 Testing
 
-After cloning the repository and installing `tox` with `pip install tox`, the unit tests in the `tests/` folder can be
+After cloning the repository and installing `nox` with `pip install nox`, the unit tests in the `tests/` folder can be
 run reproducibly with:
 
 ```shell
-$ tox
+$ nox
 ```
 
 Additionally, these tests are automatically re-run with each commit in a [GitHub Action](https://github.com/kjappelbaum/chem-caption/actions?query=workflow%3ATests).
@@ -151,7 +136,7 @@ The documentation can be built locally using the following:
 ```shell
 $ git clone git+https://github.com/kjappelbaum/chem-caption.git
 $ cd chem-caption
-$ tox -e docs
+$ nox --session docs
 $ open docs/build/html/index.html
 ``` 
 
@@ -163,11 +148,11 @@ like `texext` can be added there. Additionally, they need to be added to the
 ### 📦 Making a Release
 
 After installing the package in development mode and installing
-`tox` with `pip install tox`, the commands for making a new release are contained within the `finish` environment
-in `tox.ini`. Run the following from the shell:
+`nox` with `pip install nox`, the commands for making a new release are contained within the `finish` environment
+in `noxfile.py`. Run the following from the shell:
 
 ```shell
-$ tox -e finish
+$ nox --session finish
 ```
 
 This script does the following:
@@ -179,5 +164,5 @@ This script does the following:
    step
 4. Push to GitHub. You'll need to make a release going with the commit where the version was bumped.
 5. Bump the version to the next patch. If you made big changes and want to bump the version by minor, you can
-   use `tox -e bumpversion -- minor` after.
+   use `nox -e bumpversion -- minor` after.
 </details>

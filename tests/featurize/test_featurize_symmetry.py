@@ -21,6 +21,8 @@ def test_rotational_symmetry_number():
     results = featurizer.featurize(molecule)
     assert results == np.array([6.0])
 
+    assert isinstance(featurizer.implementors(), list)
+
     molecule = SMILESMolecule(representation_string="CO")
     results = featurizer.featurize(molecule)
     assert results == np.array([1.0])
@@ -41,6 +43,8 @@ def test_point_group_featurizer():
     molecule = SMILESMolecule(representation_string="CC")
     results = featurizer.featurize(molecule)
     assert results == np.array(["D3d"])
+
+    assert isinstance(featurizer.implementors(), list)
 
     molecule = SMILESMolecule(representation_string="O=C=O")
     results = featurizer.featurize(molecule)

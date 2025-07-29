@@ -115,12 +115,12 @@ The custom variables within these templates are as follows:
 * **VERB** - Is either 'is' or 'are' depending on whether we have a single or multiple
     properties.
 * **PROPERTY_NAME** - Property names that are split by a space.
-* **REPR_SYSTEM** - Is either 'SMILES', 'SELFIES', or 'InChI', depending on the 
+* **REPR_SYSTEM** - Is either 'SMILES', 'SELFIES', or 'InChI', depending on the
     molecule representation we used.
 * **REPR_STRING** - String representation of the molecule.
 * **COMPLETION** - Value of our featurized property.
 
-Finally, after running our custom featurizes for ``C1(Br)=CC=CC=C1Br`` SMILES we 
+Finally, after running our custom featurizes for ``C1(Br)=CC=CC=C1Br`` SMILES we
 get the following question and answer pair.
 
 .. code-block:: text
@@ -146,7 +146,7 @@ Our new featurizer would then look like this:
 
     class CustomFeaturizer(AbstractFeaturizer):
         """Our custom featurizer.
-        
+
         This featurizer just returns the representation string length of
         a molecule.
         """
@@ -163,7 +163,7 @@ Our new featurizer would then look like this:
 
             # Constraint
             self.constraint = "Constraint: Return only a single integer."
-            
+
 
         @property
         def get_names(self) -> List[Dict[str, str]]:
@@ -172,7 +172,7 @@ Our new featurizer would then look like this:
         @property
         def feature_labels(self) -> List[str]:
             return ['str_len']
-        
+
         def featurize(self, molecule: Molecule) -> np.array:
             return np.array([len(molecule.representation_string)])
 

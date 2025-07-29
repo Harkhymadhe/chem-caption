@@ -29,3 +29,8 @@ def test_valence_electron_count():
     )
 
     assert text.to_dict()["filled_completion"] == "Answer: 30"
+
+    implementor = featurizer.implementors()
+
+    assert isinstance(implementor, list)
+    assert len(implementor) > 0

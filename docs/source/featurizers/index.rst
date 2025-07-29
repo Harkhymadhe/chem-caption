@@ -13,6 +13,7 @@ Featurizers
    electronic
    miscellaneous
    reaction
+   registry
    rules
    simmetry
    sterochemistry

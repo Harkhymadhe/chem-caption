@@ -20,3 +20,11 @@ To install in development mode, use the following:
     $ git clone git+https://github.com/kjappelbaum/chem-caption.git
     $ cd chem-caption
     $ pip install -e .
+
+Dependencies
+=============
+
+Some of the featurizers might require additional dependencies. This includes ``morfeus-ml`` and
+its optional dependencies. Please visit the `morfeus`_ for more information.
+
+.. _morfeus: https://digital-chemistry-laboratory.github.io/morfeus/installation.html

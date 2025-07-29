@@ -25,6 +25,15 @@ def test_topology_count_featurizer():
     molecule = SMILESMolecule("C1=CC=CC=C1")
     featurizer = TopologyCountFeaturizer.from_preset("carbon")
     results = featurizer.featurize(molecule)
+    assert isinstance(featurizer.implementors(), list)
+
+    assert len(results) == 1
+    assert len(results[0]) == len(featurizer.feature_labels)
+    text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
+    assert isinstance(text, Prompt)
+
+    featurizer = TopologyCountFeaturizer.from_preset("nitrogen")
+    results = featurizer.featurize(molecule)
     assert len(results) == 1
     assert len(results[0]) == len(featurizer.feature_labels)
     text = featurizer.text_featurize(pos_key="noun", molecule=molecule)
@@ -53,6 +62,8 @@ def test_fragment_search_featurizer():
     molecule = SMILESMolecule("C1=CC=CC=C1")
     featurizer = FragmentSearchFeaturizer.from_preset("organic")
     results = featurizer.featurize(molecule)
+
+    assert isinstance(featurizer.implementors(), list)
 
     assert len(results) == 1
     assert len(results[0]) == len(featurizer.feature_labels)
@@ -104,6 +115,12 @@ def test_fragment_search_featurizer():
 
     assert text.to_dict()["filled_completion"] == "Answer: 1"
 
+    try:
+        featurizer = FragmentSearchFeaturizer.from_preset("jubijubi", False)
+        assert False
+    except ValueError:
+        assert True
+
 
 def test_isomorphism_featurizer():
     """Tests featurizer IsomorphismFeaturizer."""
@@ -112,6 +129,8 @@ def test_isomorphism_featurizer():
     featurizer = IsomorphismFeaturizer()
 
     results = featurizer.featurize(molecule).item()
+
+    assert isinstance(featurizer.implementors(), list)
 
     assert results == "2edc29b616104775041a9032f818e503"
 

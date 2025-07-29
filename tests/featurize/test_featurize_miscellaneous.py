@@ -2,6 +2,8 @@
 
 """Unit tests for chemcaption.featurize.miscellaneous submodule."""
 
+from IPython.display import SVG
+
 from chemcaption.featurize.miscellaneous import SVGFeaturizer
 from chemcaption.molecules import SMILESMolecule
 
@@ -14,6 +16,7 @@ def test_svg_featurizer():
     """Tests the SVGFeaturizer."""
 
     featurizer = SVGFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     molecule = SMILESMolecule("O")
     output = (
@@ -111,3 +114,8 @@ def test_svg_featurizer():
 
     results = featurizer.featurize(molecule)
     assert results.item() == output
+
+    display = featurizer.notebook_display_molecule(molecule)
+    assert isinstance(display, SVG)
+
+    assert len(featurizer.feature_labels) == 1

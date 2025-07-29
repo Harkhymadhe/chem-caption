@@ -35,6 +35,8 @@ def test_molecular_formula_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = MolecularFormulaFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     results = featurizer.featurize(molecule)
     assert results[0] == "H2O"
 
@@ -58,6 +60,8 @@ def test_molecular_mass_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = MolecularMassFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     results = featurizer.featurize(molecule)
     assert np.isclose(results[0], 18.015)
 
@@ -76,6 +80,8 @@ def test_monoisotopic_mass_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = MonoisotopicMolecularMassFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     results = featurizer.featurize(molecule)
     assert np.isclose(results[0], 18.0106)
 
@@ -92,7 +98,10 @@ def test_element_mass_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = ElementMassFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
+
     results = featurizer.featurize(molecule)
+
     assert len(results[0]) == len(featurizer.feature_labels)
     # ["Carbon", "Hydrogen", "Nitrogen", "Oxygen"] is default preset
     assert results[0][0] == 0
@@ -108,12 +117,23 @@ def test_element_mass_featurizer():
     )
     assert text.to_dict()["filled_completion"] == "Answer: 0.0, 2.016, 0.0, and 15.999"
 
+    featurizer = ElementMassFeaturizer(preset=["C", "H", "N", "O"])
+
+    results = featurizer.featurize(molecule)
+    assert len(results[0]) == len(featurizer.feature_labels)
+
+    res = featurizer._get_element_mass("O", molecule)
+
+    assert res > 0
+    assert isinstance(res, float)
+
 
 def test_element_mass_proportion_featurizer():
     """Tests featurizer ElementMassProportionFeaturizer."""
 
     molecule = SMILESMolecule("O")
     featurizer = ElementMassProportionFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(molecule)
     assert len(results[0]) == len(featurizer.feature_labels)
@@ -130,6 +150,7 @@ def test_element_count_proportion_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = ElementCountProportionFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(molecule)
     assert len(results[0]) == len(featurizer.feature_labels)
@@ -148,6 +169,7 @@ def test_element_count_featurizer():
 
     molecule = SMILESMolecule("O")
     featurizer = ElementCountFeaturizer()
+    assert isinstance(featurizer.implementors(), list)
 
     results = featurizer.featurize(molecule)
     assert len(results[0]) == len(featurizer.feature_labels)

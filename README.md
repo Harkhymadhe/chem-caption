@@ -56,7 +56,7 @@ molecule = SMILESMolecule("C1(Br)=CC=CC=C1Br")
 el_count_name = ElementCountFeaturizer(['carbon', 'hydrogen', 'oxygen', 'bromine'])
 
 # Featurize the molecule
-prompt = el_count_symbol.text_featurize(molecule=molecule)
+prompt = el_count_name.text_featurize(molecule=molecule)
 ```
 
 The generate prompt has the following QA pair.

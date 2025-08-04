@@ -20,7 +20,7 @@ jobs:
         python -m sphinx -b html -d docs/build/doctrees docs/source docs/build/html
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: html-docs
         path: docs/build/html/

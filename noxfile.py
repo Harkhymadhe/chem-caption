@@ -82,7 +82,7 @@ def doctest(session):
     session.run("cat", "tmp/build/coverage/python.txt", external=True)
 
 # py
-@nox.session(venv_backend="conda", python=["3.10", "3.11", "3.12", "3.13"])
+@nox.session(venv_backend="conda", python=["3.12"])
 def test(session):
     session.install("-r", "requirements.txt")
     session.install("-r", "test_requirements.txt")

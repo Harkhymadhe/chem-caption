@@ -1,6 +1,6 @@
-<h1 align="center">
-  <img style="vertical-align:middle" src="docs/source/_static/logo.png" width=75> 
-  <span > ChemCaption </span>
+<h1 align="center" display="inline-block">
+  <img align="center" src="docs/source/_static/logo.png" width=75> 
+  <span> ChemCaption </span>
 </h1>
 
 <p align="center">
@@ -163,3 +163,4 @@ This script does the following:
 5. Bump the version to the next patch. If you made big changes and want to bump the version by minor, you can
    use `nox -e bumpversion -- minor` after.
 </details>
+

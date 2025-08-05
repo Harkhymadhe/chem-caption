@@ -13,6 +13,8 @@ from chemcaption.featurize.base import (
     MultipleComparator
 )
 
+from chemcaption.molecules import SMILESMolecule
+
 def init_all_featurizers(module) -> list:
     """Returns a list of initialized featurizers per chemcaption submodule."""
     
@@ -28,6 +30,11 @@ def init_all_featurizers(module) -> list:
                 continue
 
             if isinstance(f, MultipleFeaturizer):
+                continue
+
+            try:
+                f.featurize(SMILESMolecule('O'))
+            except NotImplementedError:
                 continue
 
             classes.append(f)

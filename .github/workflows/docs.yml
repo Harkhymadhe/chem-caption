@@ -1,5 +1,6 @@
 name: Sphinx build
-
+permissions:
+  contents: write
 on: push
 
 jobs:
